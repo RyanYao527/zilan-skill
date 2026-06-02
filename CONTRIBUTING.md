@@ -1,32 +1,32 @@
-# 贡献指南
+# Contributing to Zilan Skill
 
-感谢对孜澜数字人 skill 的关注。
+Thank you for your interest in contributing to the Zilan Digital Persona skill.
 
-## 如何贡献
+## How to Contribute
 
-### 方式一：直接提交 Issue
-- 发现 bug 或有改善建议，欢迎提交 GitHub Issue
-- 请使用清晰的问题描述
+### Option 1: Submit an Issue
+- Found a bug or have an improvement suggestion? Open a GitHub Issue.
+- Please provide a clear description of the problem or idea.
 
-### 方式二：Fork & Pull Request
-1. Fork 本仓库
-2. 创建你的分支（`git checkout -b feature/你的功能名`）
-3. 提交更改（`git commit -m '你的提交信息'`）
-4. Push 到你的分支（`git push origin feature/你的功能名`）
-5. 提交 Pull Request
+### Option 2: Fork & Pull Request
+1. Fork this repository
+2. Create your branch (`git checkout -b feature/your-feature-name`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to your branch (`git push origin feature/your-feature-name`)
+5. Submit a Pull Request
 
-### 提交规范
-- Commit 信息使用中文，简洁描述
-- 涉及核心定义修改的，请同时更新 `沟通过程.md` 中的对应章节
-- 大幅修改请先提 Issue 讨论
+### Commit Guidelines
+- Use Chinese or English for commit messages — keep them concise
+- When modifying core definitions, please also update the corresponding sections in `沟通过程.md`
+- For significant changes, please open an Issue for discussion first
 
-## 知识共建说明
+## Knowledge Co-Building
 
-本 skill 是活的学习系统，会随修学进展持续更新。核心知识沉淀在：
-- `SKILL.md` — 主定义文件
-- `沟通过程.md` — 进化轨迹记录
+This skill is a living learning system that will be continuously updated with your study progress. Core knowledge is沉淀 in:
+- `SKILL.md` — Main definition file
+- `沟通过程.md` — Evolution trail
 
-欢迎通过 PR 共建。
+Contributions via PR are welcome.
 
 ---
 
