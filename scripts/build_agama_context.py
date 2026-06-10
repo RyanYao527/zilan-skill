@@ -137,7 +137,7 @@ def build_text_file(xml_path: Path) -> Path:
         "## 来源与使用边界",
         "",
         f"- 来源：CBETA XML-P5，`{work_id}`，原始 XML 保留于 `_source/{xml_path.name}`。",
-        "- 使用：CBETA 资料要求非营利用途，并在传播、节录引用或再加工发行时保留说明与版本资讯；本文件仅作为 zilan-skill 的按需参考文本。",
+        "- 使用：CBETA 资料要求非营利用途，并在传播、节录引用或再加工发行时保留说明与版本资讯；本文件仅作为 zilan-agent 的按需参考文本。",
         f"- 原始标题：{title or meta['title']}",
     ]
     if author:
@@ -168,7 +168,7 @@ def build_index(paths: list[Path]) -> Path:
             "",
             "- 文本来源：CBETA 正式 XML-P5 经文，官方仓库 `cbeta-org/xml-p5`。",
             "- CBETA 官方说明：该仓库为正式 TEI P5 XML 经文；版权说明要求非营利用途，传播、节录引用或再加工发行时保留说明与版本资讯。",
-            "- 本目录保留 `_source/` 原始 XML 文件，以保留 CBETA 头部、版本和版权信息；Markdown 文件为便于 zilan-skill 按需阅读而生成的纯文本视图。",
+            "- 本目录保留 `_source/` 原始 XML 文件，以保留 CBETA 头部、版本和版权信息；Markdown 文件为便于 zilan-agent 按需阅读而生成的纯文本视图。",
             "- 讨论义理时，应以传承、注疏、师承讲解和上下文为准；本地文本主要用于检索、引用定位和结构分析。",
             "",
             "## 经文文件",

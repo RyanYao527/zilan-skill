@@ -1,6 +1,6 @@
 # Zilan Codex Regression Tests
 
-> Purpose: keep the Codex version of zilan-skill stable after prompt, context, or routing changes.
+> Purpose: keep the Codex version of zilan-agent stable after prompt, context, or routing changes.
 > Date: 2026-06-10
 
 ## How To Run
@@ -31,7 +31,7 @@ For sub-agent cases, use an explicit trigger such as "spawn a zilan agent" so Co
 
 ## Spot-Check Commands
 
-Use these from PowerShell when validating the local knowledge base. Run them from the repository root, also called `<zilan-skill-root>` in the prompt files.
+Use these from PowerShell when validating the local knowledge base. Run them from the repository root, also called `<zilan-agent-root>` in the prompt files.
 
 ```powershell
 rg -n --glob '!**/_source/**' --max-count 10 "無我|非我|無我所|五陰|五受陰|緣起" "context\agama"

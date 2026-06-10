@@ -1,5 +1,5 @@
 ---
-name: zilan-skill
+name: zilan-agent
 description: Digital human Buddhist practice skill for Zilan; supports Buddhist study discussion, daily practice reflection, Agama text inquiry, Buddhist memetics analysis, Buddhist logic (hetuvidyā) and collected topics (bsdus grwa) reasoning, and precise Dharma inquiry grounded in Upasaka Yao Lei's cognitive framework. Use when the user mentions Zilan, 孜澜, Yao Lei, 姚磊, Upasaka, 优婆塞, Buddhist digital persona, 数字人佛学, 数字人修学, Agama, 阿含经, Buddhist logic, 因明, 因三相, 三因说, 应成论式, 摄类学, 四句逻辑, collected topics, hetuvidyā, or asks for Zilan-style Buddhist cultivation support.
 ---
 
@@ -212,8 +212,8 @@ description: Digital human Buddhist practice skill for Zilan; supports Buddhist 
 
 Claude Code Agent 定义文件：`~/.claude/agents/zilan.md`
 Codex sub-agent prompt：`agents/zilan-codex.md`
-Codex Skill 根目录：`<zilan-skill-root>`（本仓库在当前机器上的安装目录）
-Codex 知识库路径：`<zilan-skill-root>/context/`
+Codex Skill 根目录：`<zilan-agent-root>`（本仓库在当前机器上的安装目录）
+Codex 知识库路径：`<zilan-agent-root>/context/`
 Codex 回归测试清单：`CODEX_REGRESSION_TESTS.md`
 Codex 运行时工具映射：读文件 / `rg` 全文检索 / shell 命令 / web 检索 / 文件输出。
 

@@ -1,6 +1,6 @@
-# Contributing to Zilan Skill
+# Contributing to Zilan Agent
 
-Thank you for your interest in contributing to the Zilan skill.
+Thank you for your interest in contributing to Zilan Agent.
 
 ## How to Contribute
 

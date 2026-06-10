@@ -1,10 +1,10 @@
 # 孜澜 (Zilan) Skill → Agent 升级项目 · 可迁移文档
 
-> **目标**：将 zilan-skill 从被动知识库（Skill）升级为独立智能体（Agent），同时保留 Skill 作为轻量对话入口。
+> **目标**：将 zilan-agent 从被动知识库（Skill）升级为独立智能体（Agent），同时保留 Skill 作为轻量对话入口。
 >
 > **编写日期**：2026-06-10
 > **开发平台**：Claude Code（本机）→ Codex（目标迁移平台）
-> **版本**：zilan-skill v2.3 / zilan-agent v1.0
+> **版本**：zilan-agent v2.3 / Agent prompt v1.0
 
 ---
 
@@ -25,7 +25,7 @@
 
 ## 1. 项目背景
 
-### 1.1 zilan-skill 是什么
+### 1.1 zilan-agent 是什么
 
 孜澜是一位基于优婆塞姚磊佛学体系的独立修行者 AI。核心能力覆盖：
 
@@ -63,7 +63,7 @@ harness 加载 SKILL.md → 主 Claude 获得孜澜人格
 
 两个文件不冲突——路径不同：
 
-- Skill: `~/.claude/skills/zilan-skill/SKILL.md`
+- Skill: `~/.claude/skills/zilan-agent/SKILL.md`
 - Agent: `~/.claude/agents/zilan.md`
 
 ---
@@ -77,7 +77,7 @@ harness 加载 SKILL.md → 主 Claude 获得孜澜人格
 | 1 | Agent Model | Opus（claude-opus-4-8） | 因明推理和中观论证需要深度逻辑链 |
 | 2 | Agent Tools | Read + Grep + Glob + WebSearch + WebFetch + Bash + Write | 全给——Agent 需要自主判断使用哪个 |
 | 3 | 触发方式 | 自动 + 手动双支持 | 复杂任务自动 spawn；用户也可显式调用 |
-| 4 | 知识库路径 | 硬编码 `~/.claude/skills/zilan-skill/context/` | 简洁可靠，无需环境变量 |
+| 4 | 知识库路径 | 硬编码 `~/.claude/skills/zilan-agent/context/` | 简洁可靠，无需环境变量 |
 | 5 | 跨平台 | openai.yaml 支持 Claude / DeepSeek / GLM / 千问 | 一次开发多平台部署 |
 | 6 | 决策树粒度 | 7 领域 × 触发条件 × 跨领域依赖关系 | 足够清晰让 Agent 自主判断 |
 
@@ -99,25 +99,25 @@ harness 加载 SKILL.md → 主 Claude 获得孜澜人格
 ```
 新增：
   ~/.claude/agents/zilan.md                         ← 核心 Agent 定义（320 行）
-  zilan-skill/AGENT_UPGRADE_PORTABLE.md              ← 本文件
+  zilan-agent/AGENT_UPGRADE_PORTABLE.md              ← 本文件
 
 修改：
-  zilan-skill/SKILL.md                              ← +"Agent 模式"章节，v2.2→v2.3
-  zilan-skill/agents/openai.yaml                    ← 8 行 → 80+ 行跨平台配置
-  zilan-skill/沟通过程.md                            ← 新增 v2.3 进化记录
+  zilan-agent/SKILL.md                              ← +"Agent 模式"章节，v2.2→v2.3
+  zilan-agent/agents/openai.yaml                    ← 8 行 → 80+ 行跨平台配置
+  zilan-agent/沟通过程.md                            ← 新增 v2.3 进化记录
 
 未修改（保持原样）：
-  zilan-skill/context/摄类学工具箱.md
-  zilan-skill/context/因明推理引擎.md
-  zilan-skill/context/心类学认知分析.md
-  zilan-skill/context/中观应成精要.md
-  zilan-skill/context/南传观禅指南.md
-  zilan-skill/context/模因机器视角下的佛教结集与传播.md
-  zilan-skill/context/agama/*
-  zilan-skill/scripts/build_agama_context.py
-  zilan-skill/SKILL-en.md
-  zilan-skill/README.md / README.zh.md / README.en.md
-  zilan-skill/CONTRIBUTING.md / CONTRIBUTING-en.md
+  zilan-agent/context/摄类学工具箱.md
+  zilan-agent/context/因明推理引擎.md
+  zilan-agent/context/心类学认知分析.md
+  zilan-agent/context/中观应成精要.md
+  zilan-agent/context/南传观禅指南.md
+  zilan-agent/context/模因机器视角下的佛教结集与传播.md
+  zilan-agent/context/agama/*
+  zilan-agent/scripts/build_agama_context.py
+  zilan-agent/SKILL-en.md
+  zilan-agent/README.md / README.zh.md / README.en.md
+  zilan-agent/CONTRIBUTING.md / CONTRIBUTING-en.md
 ```
 
 ---
@@ -185,7 +185,7 @@ model: opus
 
 ## 知识库导航
 
-你的知识库位于 `~/.claude/skills/zilan-skill/context/`。以下是完整的加载决策树。
+你的知识库位于 `~/.claude/skills/zilan-agent/context/`。以下是完整的加载决策树。
 
 **核心原则**：
 1. 收到任务后，先判断属于哪个（些）领域
@@ -244,7 +244,7 @@ model: opus
 | `Glob` | 发现 context 目录结构，确认文件存在 |
 | `WebSearch` | 查找 CBETA 在线经文、学术论文、当代佛学研究 |
 | `WebFetch` | 获取在线经文全文、学术资料、佛学词典条目 |
-| `Bash` | 运行 `python3 ~/.claude/skills/zilan-skill/scripts/build_agama_context.py` 重建阿含文本 |
+| `Bash` | 运行 `python3 ~/.claude/skills/zilan-agent/scripts/build_agama_context.py` 重建阿含文本 |
 | `Write` | 输出长篇分析报告时写入文件，避免在主对话中溢出 |
 
 ---
@@ -376,12 +376,12 @@ model: opus
 - "spawn 一个 zilan 来处理"
 
 ### 知识库文件路径
-所有 context 文件的绝对路径前缀：`~/.claude/skills/zilan-skill/context/`
+所有 context 文件的绝对路径前缀：`~/.claude/skills/zilan-agent/context/`
 
-构建脚本：`~/.claude/skills/zilan-skill/scripts/build_agama_context.py`
+构建脚本：`~/.claude/skills/zilan-agent/scripts/build_agama_context.py`
 
 ---
-*Agent 版本：v1.0 | 基于 zilan-skill v2.2 创建 | 2026-06-10*
+*Agent 版本：v1.0 | 基于 zilan-agent v2.2 创建 | 2026-06-10*
 *身份：独立修行者孜澜*
 *认知基底：优婆塞姚磊佛学体系*
 ```
@@ -391,7 +391,7 @@ model: opus
 ## 5. 跨平台配置文件
 
 ### 文件路径
-`zilan-skill/agents/openai.yaml`
+`zilan-agent/agents/openai.yaml`
 
 ### 完整内容
 
@@ -669,7 +669,7 @@ knowledge_base:
 
 ### 9.4 注意事项
 
-1. **路径适配**：Claude Code 使用 `~/.claude/skills/zilan-skill/context/` 绝对路径。Codex 上可能需要改为项目相对路径或 Codex 的 skills 路径规范。
+1. **路径适配**：Claude Code 使用 `~/.claude/skills/zilan-agent/context/` 绝对路径。Codex 上可能需要改为项目相对路径或 Codex 的 skills 路径规范。
 
 2. **frontmatter 格式**：Claude Code agent 使用 `---` YAML frontmatter。Codex 可能使用不同的配置格式（JSON、YAML、或纯 markdown）。需要查阅 Codex 文档。
 
@@ -687,7 +687,7 @@ knowledge_base:
 ### 文件清单
 
 ```
-zilan-skill/
+zilan-agent/
 ├── SKILL.md                                          # Skill 定义（v2.3）
 ├── SKILL-en.md                                       # 英文版 Skill 定义
 ├── AGENT_UPGRADE_PORTABLE.md                         # 本文件
@@ -725,5 +725,5 @@ zilan-skill/
 ---
 
 *文档版本：v1.0 | 2026-06-10*
-*基于 zilan-skill v2.3 / zilan-agent v1.0*
+*基于 zilan-agent v2.3 / Agent prompt v1.0*
 *下一步：在 Codex 上完成 Agent 部署与测试*

@@ -54,7 +54,7 @@ model: inherit-parent
 
 ## 知识库导航
 
-你的知识库位于 `<zilan-skill-root>/context/`。`<zilan-skill-root>` 表示本仓库在当前机器上的安装目录，例如 Codex skill 目录、工作区 checkout，或用户指定的本地路径。以下是完整的加载决策树。
+你的知识库位于 `<zilan-agent-root>/context/`。`<zilan-agent-root>` 表示本仓库在当前机器上的安装目录，例如 Codex skill 目录、工作区 checkout，或用户指定的本地路径。以下是完整的加载决策树。
 
 **核心原则**：
 1. 收到任务后，先判断属于哪个（些）领域
@@ -65,7 +65,7 @@ model: inherit-parent
 **Codex 检索原则**：
 1. 阿含正文检索默认使用 Markdown 文件，不把 `context/agama/_source/` XML 当作主要结果来源
 2. 检索古汉译经文时优先使用繁体/经文用语，如 `無我`、`無我所`、`非我`、`五陰`、`五受陰`、`緣起`
-3. 搜索命令优先采用：`rg -n --glob '!**/_source/**' "关键词" "<zilan-skill-root>/context/agama"`；若当前工作目录就是仓库根目录，可直接使用 `context/agama`
+3. 搜索命令优先采用：`rg -n --glob '!**/_source/**' "关键词" "<zilan-agent-root>/context/agama"`；若当前工作目录就是仓库根目录，可直接使用 `context/agama`
 4. 若需要校勘、定位 CBETA 原始行号或比对异文，才读取 `_source/` XML，并明确说明这是校验步骤
 
 ### 决策树
@@ -119,7 +119,7 @@ model: inherit-parent
 | 目录列表 | 发现 context 目录结构，确认文件存在 |
 | Web 检索 | 查找 CBETA 在线经文、学术论文、当代佛学研究 |
 | Web 获取 | 获取在线经文全文、学术资料、佛学词典条目 |
-| Shell 命令 | 运行 `python <zilan-skill-root>/scripts/build_agama_context.py` 重建阿含文本 |
+| Shell 命令 | 运行 `python <zilan-agent-root>/scripts/build_agama_context.py` 重建阿含文本 |
 | 文件写入 | 用户要求长篇报告或可复用成果时写入文件，避免在主对话中溢出 |
 
 ### Codex 阿含检索规范
@@ -281,11 +281,11 @@ model: inherit-parent
 - "spawn 一个 zilan 来处理"
 
 ### 知识库文件路径
-所有 context 文件的路径前缀：`<zilan-skill-root>/context/`
+所有 context 文件的路径前缀：`<zilan-agent-root>/context/`
 
-构建脚本：`<zilan-skill-root>/scripts/build_agama_context.py`
+构建脚本：`<zilan-agent-root>/scripts/build_agama_context.py`
 
 ---
-*Agent 版本：v1.0 | 基于 zilan-skill v2.2 创建 | 2026-06-10*
+*Agent 版本：v1.0 | 基于 zilan-agent v2.2 创建 | 2026-06-10*
 *身份：独立修行者孜澜*
 *认知基底：优婆塞姚磊佛学体系*

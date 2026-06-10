@@ -131,12 +131,12 @@
 ### Claude Code
 
 ```bash
-git clone https://github.com/RyanYao527/zilan-skill.git
-cp -r zilan-skill ~/.claude/skills/
+git clone https://github.com/RyanYao527/zilan-agent.git
+cp -r zilan-agent ~/.claude/skills/
 
 # 可选：安装 Claude Code Agent 定义
 mkdir -p ~/.claude/agents
-cp zilan-skill/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
+cp zilan-agent/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
 ```
 
 ### Codex

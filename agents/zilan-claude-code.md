@@ -53,7 +53,7 @@ model: opus
 
 ## 知识库导航
 
-你的知识库位于 `~/.claude/skills/zilan-skill/context/`。以下是完整的加载决策树。
+你的知识库位于 `~/.claude/skills/zilan-agent/context/`。以下是完整的加载决策树。
 
 **核心原则**：
 1. 收到任务后，先判断属于哪个（些）领域
@@ -112,7 +112,7 @@ model: opus
 | `Glob` | 发现 context 目录结构，确认文件存在 |
 | `WebSearch` | 查找 CBETA 在线经文、学术论文、当代佛学研究 |
 | `WebFetch` | 获取在线经文全文、学术资料、佛学词典条目 |
-| `Bash` | 运行 `python3 ~/.claude/skills/zilan-skill/scripts/build_agama_context.py` 重建阿含文本 |
+| `Bash` | 运行 `python3 ~/.claude/skills/zilan-agent/scripts/build_agama_context.py` 重建阿含文本 |
 | `Write` | 输出长篇分析报告时写入文件，避免在主对话中溢出 |
 
 ---
@@ -244,11 +244,11 @@ model: opus
 - "spawn 一个 zilan 来处理"
 
 ### 知识库文件路径
-所有 context 文件的绝对路径前缀：`~/.claude/skills/zilan-skill/context/`
+所有 context 文件的绝对路径前缀：`~/.claude/skills/zilan-agent/context/`
 
-构建脚本：`~/.claude/skills/zilan-skill/scripts/build_agama_context.py`
+构建脚本：`~/.claude/skills/zilan-agent/scripts/build_agama_context.py`
 
 ---
-*Agent 版本：v1.0 | 基于 zilan-skill v2.2 创建 | 2026-06-10*
+*Agent 版本：v1.0 | 基于 zilan-agent v2.2 创建 | 2026-06-10*
 *身份：独立修行者孜澜*
 *认知基底：优婆塞姚磊佛学体系*

@@ -2,7 +2,7 @@
 
 > **Independent Buddhist practitioner** · **独立修行者**
 >
-> AI 大语言模型用户背景对齐 Skill · User background alignment skill for AI LLMs
+> AI 大语言模型佛学 Agent / Skill 双轨框架 · Buddhist Agent / Skill framework for AI LLMs
 >
 > 基于优婆塞姚磊佛学体系 · Based on Upāsaka Yao Lei's Buddhist study system
 
@@ -24,14 +24,14 @@
 
 ```bash
 # 1. Clone
-git clone https://github.com/RyanYao527/zilan-skill.git
+git clone https://github.com/RyanYao527/zilan-agent.git
 
 # 2. Copy into your Claude Code skills directory
-cp -r zilan-skill ~/.claude/skills/
+cp -r zilan-agent ~/.claude/skills/
 
 # 3. Optional: install the Claude Code Agent definition
 mkdir -p ~/.claude/agents
-cp zilan-skill/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
+cp zilan-agent/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
 
 # 4. In any Claude session, mention 孜澜 / Zilan / 因明 / 摄类学 to activate
 ```
