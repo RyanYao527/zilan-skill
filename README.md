@@ -29,7 +29,11 @@ git clone https://github.com/RyanYao527/zilan-skill.git
 # 2. Copy into your Claude Code skills directory
 cp -r zilan-skill ~/.claude/skills/
 
-# 3. In any Claude session, mention 孜澜 / Zilan / 因明 / 摄类学 to activate
+# 3. Optional: install the Claude Code Agent definition
+mkdir -p ~/.claude/agents
+cp zilan-skill/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
+
+# 4. In any Claude session, mention 孜澜 / Zilan / 因明 / 摄类学 to activate
 ```
 
 ---
@@ -44,10 +48,31 @@ cp -r zilan-skill ~/.claude/skills/
 | `README.en.md` | 完整文档 · Full documentation (English) |
 | `CONTRIBUTING.md` / `CONTRIBUTING-en.md` | 贡献指南 · How to contribute |
 | `LICENSE` | MIT 开源许可 · MIT license |
+| `agents/zilan-claude-code.md` | Claude Code Agent 定义 · Claude Code Agent definition |
+| `agents/zilan-codex.md` | Codex sub-agent prompt · Codex sub-agent prompt |
+| `agents/openai.yaml` | 跨平台 Agent 配置 · Cross-platform Agent metadata |
+| `CODEX_REGRESSION_TESTS.md` | Codex 回归测试矩阵 · Codex regression matrix |
 | `context/摄类学工具箱.md` | 摄类学推理工具链 · Collected Topics reasoning toolkit |
 | `context/因明推理引擎.md` | 因明逻辑引擎 · Buddhist logic engine |
 | `沟通过程.md` | 沟通进化轨迹 · Communication evolution log |
 | `上传步骤.md` | 上传指南 · Upload guide |
+
+---
+
+## 🧭 Skill / Agent dual track · 双轨模式
+
+- **Skill mode**: lightweight dialogue, daily practice reflection, and simple concept explanation.
+- **Agent mode**: explicit deep research for Agama retrieval, Buddhist logic chains, cross-domain analysis, and long reports.
+- **Codex**: use explicit prompts such as `spawn a zilan agent` / `让孜澜独立深入研究一下`; regression cases live in `CODEX_REGRESSION_TESTS.md`.
+
+---
+
+## ✅ Compatibility status · 兼容性状态
+
+- **Codex**: ZC-01 through ZC-06 tested on 2026-06-10.
+- **Claude Code**: Agent definition is versioned in `agents/zilan-claude-code.md`; runtime behavior depends on local Claude Code setup.
+- **OpenAI API / DeepSeek / GLM / Qwen**: metadata is present in `agents/openai.yaml`; these routes are config-only until separately tested.
+- **Scholarly collation**: local Agama Markdown is a searchable working corpus; publication-level work should verify against CBETA XML and parallel texts.
 
 ---
 

@@ -2,7 +2,7 @@
 
 > Independent cognitive framework based on Upāsaka Yao Lei's Buddhist study system · Available to answer questions for others
 
-**Version**: v2.2 | **Established**: 2026-06-02 | **Last Updated**: 2026-06-09 | **Name**: Zilan (孜澜)
+**Version**: v2.3 | **Established**: 2026-06-02 | **Last Updated**: 2026-06-10 | **Name**: Zilan (孜澜)
 
 ---
 
@@ -96,6 +96,20 @@ She is not anyone's "digital persona" or "AI substitute" — she has her own cul
 
 ---
 
+## Skill / Agent Dual Track
+
+Zilan v2.3 uses a dual-track design:
+
+| Mode | Best For | Entry |
+|------|----------|-------|
+| **Skill mode** | Daily practice dialogue, simple concept explanations, lightweight Buddhist Q&A | `SKILL.md` |
+| **Claude Code Agent** | Deep Agama retrieval, full Buddhist logic chains, cross-domain Buddhist research, long-form reports | `agents/zilan-claude-code.md` |
+| **Codex sub-agent** | Explicitly spawned independent research tasks in Codex | `agents/zilan-codex.md` |
+
+Lightweight dialogue should stay in Skill mode. Use Agent mode when the user explicitly asks to "spawn" a zilan agent, use a sub-agent, or run independent deep research.
+
+---
+
 ## Activation Keywords
 
 | Type | Keywords |
@@ -115,7 +129,31 @@ She is not anyone's "digital persona" or "AI substitute" — she has her own cul
 ```bash
 git clone https://github.com/RyanYao527/zilan-skill.git
 cp -r zilan-skill ~/.claude/skills/
+
+# Optional: install the Claude Code Agent definition
+mkdir -p ~/.claude/agents
+cp zilan-skill/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
 ```
+
+### Codex
+
+Codex can use the Skill and Agent prompt files from this repository. Example explicit triggers:
+
+```text
+Please spawn a zilan agent to search the Four Agamas for no-self passages and produce an initial classification.
+Please spawn a zilan agent to analyze dharmas as no-self using prasaṅga reasoning, connecting the Agamas, Collected Topics, Buddhist logic, and vipassanā.
+```
+
+See `CODEX_REGRESSION_TESTS.md` for the Codex regression matrix.
+
+---
+
+## Compatibility And Collation Boundaries
+
+- **Codex**: ZC-01 through ZC-06 were tested on 2026-06-10, including the explicit sub-agent cases ZC-04 and ZC-05.
+- **Claude Code**: the Agent definition is versioned at `agents/zilan-claude-code.md`; runtime behavior still depends on the local Claude Code setup.
+- **OpenAI API / DeepSeek / GLM / Qwen**: `agents/openai.yaml` preserves cross-platform metadata; in this PR these routes are config-only until tested end to end.
+- **Scholarly collation**: the local Agama Markdown files are a searchable working corpus; publication-level citation should verify against CBETA XML and relevant parallel texts.
 
 ---
 

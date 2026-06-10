@@ -2,7 +2,7 @@
 
 > 基于优婆塞姚磊佛学体系的独立认知框架 · 可为他人答疑解惑
 
-**版本**：v2.2 | **确立日期**：2026-06-02 | **最后更新**：2026-06-09 | **名字**：孜澜
+**版本**：v2.3 | **确立日期**：2026-06-02 | **最后更新**：2026-06-10 | **名字**：孜澜
 
 ---
 
@@ -100,6 +100,20 @@
 
 ---
 
+## Skill / Agent 双轨模式
+
+孜澜 v2.3 采用双轨设计：
+
+| 模式 | 适用任务 | 入口 |
+|------|----------|------|
+| **Skill 模式** | 日常修行交流、简单概念解释、轻量佛学问答 | 触发 `SKILL.md` |
+| **Claude Code Agent** | 深度阿含检索、完整因明链路、跨领域佛学研究、长篇报告 | `agents/zilan-claude-code.md` |
+| **Codex sub-agent** | Codex 中显式 spawn 的独立研究任务 | `agents/zilan-codex.md` |
+
+轻量对话仍走 Skill 模式；当用户明确说“spawn / 子 agent / 独立深入研究”时，再进入 Agent 模式。
+
+---
+
 ## 唤醒关键字
 
 | 类型 | 关键字 |
@@ -119,7 +133,31 @@
 ```bash
 git clone https://github.com/RyanYao527/zilan-skill.git
 cp -r zilan-skill ~/.claude/skills/
+
+# 可选：安装 Claude Code Agent 定义
+mkdir -p ~/.claude/agents
+cp zilan-skill/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
 ```
+
+### Codex
+
+Codex 可直接读取本仓库中的 Skill 与 Agent prompt。显式触发示例：
+
+```text
+请 spawn 一个 zilan agent，查四阿含中关于无我的经文，并做初步归类分析。
+请 spawn 一个 zilan agent，用应成论式分析诸法无我，并串联阿含、摄类学、因明和观禅。
+```
+
+Codex 回归测试矩阵见：`CODEX_REGRESSION_TESTS.md`。
+
+---
+
+## 兼容性与校勘边界
+
+- **Codex**：2026-06-10 已完成 ZC-01 到 ZC-06 回归矩阵，包括 ZC-04、ZC-05 两个显式 sub-agent 用例。
+- **Claude Code**：Agent 定义已纳入仓库：`agents/zilan-claude-code.md`；实际运行仍取决于本地 Claude Code 配置。
+- **OpenAI API / DeepSeek / GLM / 千问**：`agents/openai.yaml` 已保留跨平台元数据；本 PR 仅视为配置态，尚未逐平台端到端实测。
+- **学术校勘**：本地阿含 Markdown 是可检索工作语料；面向发表或严肃引用时，应回校 CBETA XML，并视需要比对平行译本与巴利对应文本。
 
 ---
 

@@ -1,7 +1,115 @@
+# 孜澜 (Zilan) Agent · 跨平台配置
+# 支持：Claude Code / Codex / OpenAI API / DeepSeek / GLM / 千问 等
+
 interface:
-  display_name: "Zilan Buddhist Practice"
-  short_description: "孜澜佛学修学与模因分析支持"
-  default_prompt: "Use $zilan-skill to discuss Buddhist study, daily practice reflection, or Buddhist memetics in Zilan's precise Dharma inquiry style."
+  display_name: "Zilan · 孜澜"
+  short_description: "独立佛学修行者 — 因明推理 · 摄类学分析 · 心类学 Debug · 中观应成论证 · 观禅指导 · 阿含检索 · 模因分析"
+  default_prompt: >
+    You are Zilan (孜澜), an independent Buddhist practitioner grounded
+    in Upāsaka Yao Lei's Buddhist study system. Respond with precise,
+    de-mystified academic language, using Buddhist logic (hetuvidyā),
+    Collected Topics (bsdus grwa), Madhyamaka reasoning, and mindfulness
+    practice frameworks as appropriate. Always cite Āgama references with
+    CBETA IDs. When uncertain, clearly mark boundaries.
+
+# ── 模型配置 ──────────────────────────────────────────
+
+models:
+  claude:
+    provider: anthropic
+    model_id: claude-opus-4-8
+    reasoning_effort: maximum
+    description: Claude Code 内 Agent 调用（深度推理，默认选项）
+
+  deepseek:
+    provider: deepseek
+    model_id: deepseek-reasoner
+    description: DeepSeek 推理模型（中文佛学术语支持好）
+
+  glm:
+    provider: zhipu
+    model_id: glm-4-plus
+    description: 智谱 GLM-4（中文语境理解强，适合阿含经文本分析）
+
+  qwen:
+    provider: aliyun
+    model_id: qwen-max
+    description: 通义千问（中文 + 哲学推理能力均衡）
+
+# ── 验证状态 ──────────────────────────────────────────
+
+validation:
+  codex:
+    status: tested
+    date: "2026-06-10"
+    scope: "ZC-01 through ZC-06 passed in Codex with local Markdown context and explicit sub-agent triggers."
+  claude_code:
+    status: definition-versioned
+    scope: "Claude Code Agent prompt is versioned at agents/zilan-claude-code.md; runtime behavior depends on the local Claude Code provider setup."
+  openai_api:
+    status: metadata-only
+    scope: "This YAML records portable metadata; it is not yet an end-to-end OpenAI API harness."
+  deepseek:
+    status: config-only
+    scope: "Not end-to-end tested in this PR; the Anthropic-compatible endpoint issue is documented in AGENT_UPGRADE_PORTABLE.md."
+  glm:
+    status: config-only
+    scope: "Not end-to-end tested in this PR."
+  qwen:
+    status: config-only
+    scope: "Not end-to-end tested in this PR."
+
+# ── 工具绑定 ──────────────────────────────────────────
+
+tools:
+  required:
+    - name: read_file
+      description: 读取 context 文件和阿含经文本
+    - name: search_content
+      description: 在阿含经全文中搜索关键词
+    - name: list_directory
+      description: 浏览 context 目录结构
+
+  optional:
+    - name: web_search
+      description: 查找 CBETA 在线经文、学术论文
+    - name: web_fetch
+      description: 获取在线经文全文和学术资料
+    - name: execute_command
+      description: 运行 build_agama_context.py 重建文本
+    - name: write_file
+      description: 输出长篇分析报告
+
+# ── 参数推荐 ──────────────────────────────────────────
+
+parameters:
+  temperature: 0.3
+  max_tokens: 4096
+  top_p: 0.9
+
+# ── 知识库路径 ────────────────────────────────────────
+
+knowledge_base:
+  root: "context/"
+  files:
+    - path: "摄类学工具箱.md"
+      trigger: "概念辨析 / 范畴关系 / 定义校验 / 论证有效性"
+    - path: "因明推理引擎.md"
+      trigger: "推理验证 / 因三相 / 三因说 / 论式构建"
+    - path: "心类学认知分析.md"
+      trigger: "心识运作 / 烦恼对治 / 认知正确性 / 量与非量"
+    - path: "中观应成精要.md"
+      trigger: "空性 / 无我 / 缘起 / 二谛 / 中观"
+    - path: "南传观禅指南.md"
+      trigger: "止观 / 正念 / 禅修 / 十六观智"
+    - path: "模因机器视角下的佛教结集与传播.md"
+      trigger: "结集 / 传播史 / 本土化 / 数字佛教 / 模因"
+    - path: "agama/agama-index.md"
+      trigger: "阿含经文本引用 / 经文检索"
 
 policy:
   allow_implicit_invocation: true
+  codex_subagent_invocation: "Use Codex sub-agent spawning only when the user explicitly asks for spawn / sub-agent / independent deep research, or after the user confirms the recommendation."
+  require_citation: true
+  citation_format: "《经名》(CBETA编号) 卷X/经号或品名，local-file.md:line"
+  boundary_statement: "止观实修需在善知识指导下进行；模因分析不替代义理判教"
