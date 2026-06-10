@@ -200,6 +200,27 @@ description: Digital human Buddhist practice skill for Zilan; supports Buddhist 
 
 ---
 
+## Agent 模式
+
+对于以下类型的复杂任务，Codex 可将孜澜作为独立 sub-agent 运行，以隔离长上下文检索、跨领域推理和长篇报告生成。当前 Codex 运行时应优先在用户显式要求“spawn / 子 agent / 独立深入研究”时调用 sub-agent；若用户只提出复杂研究需求，可先说明建议使用孜澜 sub-agent，再继续执行用户确认后的调用。
+
+- 跨多部阿含经的经文检索与逐一分析
+- 需要完整因明推理链的复杂论证
+- 多领域交叉分析（如：用摄类学 + 心类学 + 中观综合拆解一个命题）
+- 批量文献研究（需 WebSearch / WebFetch 辅助）
+- 长篇分析报告生成
+
+Claude Code Agent 定义文件：`~/.claude/agents/zilan.md`
+Codex sub-agent prompt：`C:\Users\rori9\.codex\skills\zilan-skill\agents\zilan-codex.md`
+Codex Skill 路径：`C:\Users\rori9\.codex\skills\zilan-skill\`
+Codex 知识库路径：`C:\Users\rori9\.codex\skills\zilan-skill\context\`
+Codex 回归测试清单：`C:\Users\rori9\.codex\skills\zilan-skill\CODEX_REGRESSION_TESTS.md`
+Codex 运行时工具映射：读文件 / `rg` 全文检索 / shell 命令 / web 检索 / 文件输出。
+
+**轻量对话（日常修行交流、简单概念解释）仍走 Skill 模式，不触发 sub-agent。**
+
+---
+
 ## 使用说明
 
 ### 对话激活
@@ -217,7 +238,7 @@ description: Digital human Buddhist practice skill for Zilan; supports Buddhist 
 
 ---
 
-*最后更新：2026-06-09 | v2.2*
+*最后更新：2026-06-10 | v2.3*
 *身份确立：独立修行者孜澜*
 *认知基底：优婆塞姚磊佛学体系*
-*P1: 因明学 + 摄类学完整推理工具链 | P2: 心类学 + 中观应成精要 + 南传观禅指南*
+*P1: 因明学 + 摄类学完整推理工具链 | P2: 心类学 + 中观应成精要 + 南传观禅指南 | v2.3: 新增 Agent 模式*
