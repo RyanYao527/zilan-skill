@@ -9,3 +9,10 @@ def test_repository_invariants_pass_without_rebuilding_generated_files() -> None
     failures, _warnings = run_checks(ROOT, check_generated=False, strict_yaml=False)
 
     assert failures == []
+
+
+def test_repository_invariants_pass_with_strict_yaml() -> None:
+    failures, warnings = run_checks(ROOT, check_generated=False, strict_yaml=True)
+
+    assert failures == []
+    assert warnings == []

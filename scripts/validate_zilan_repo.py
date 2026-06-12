@@ -26,6 +26,7 @@ REQUIRED_FILES = (
     "agents/zilan-codex.md",
     "scripts/build_agama_context.py",
     "scripts/search_agama.py",
+    "tests/regression_cases.yaml",
 )
 
 REQUIRED_CONTEXT_FILES = (
@@ -55,6 +56,7 @@ GENERATED_AGAMA_FILES = (
 )
 
 REGRESSION_CASES = ("ZC-01", "ZC-02", "ZC-03", "ZC-04", "ZC-05", "ZC-06")
+REGRESSION_CASES_PATH = "tests/regression_cases.yaml"
 
 
 def _hash_file(path: Path) -> str:
@@ -74,6 +76,91 @@ def _check_regression_matrix(root: Path, failures: list[str]) -> None:
             failures.append(f"Missing regression case in CODEX_REGRESSION_TESTS.md: {case}")
 
 
+def _load_yaml(root: Path, rel_path: str, failures: list[str], warnings: list[str], strict_yaml: bool) -> object | None:
+    yaml_path = root / rel_path
+    try:
+        import yaml  # type: ignore[import-not-found]
+    except ModuleNotFoundError:
+        message = f"PyYAML is not installed; skipped {rel_path} parse check."
+        if strict_yaml:
+            failures.append(message)
+        else:
+            warnings.append(message)
+        return None
+
+    try:
+        return yaml.safe_load(yaml_path.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001 - surface parser details to maintainers.
+        failures.append(f"Failed to parse {rel_path}: {exc}")
+        return None
+
+
+def _check_regression_cases_yaml(root: Path, failures: list[str], warnings: list[str], strict_yaml: bool) -> None:
+    data = _load_yaml(root, REGRESSION_CASES_PATH, failures, warnings, strict_yaml)
+    if data is None:
+        return
+    if not isinstance(data, dict):
+        failures.append(f"{REGRESSION_CASES_PATH} must be a mapping.")
+        return
+
+    cases = data.get("cases")
+    if not isinstance(cases, list):
+        failures.append(f"{REGRESSION_CASES_PATH} must contain a cases list.")
+        return
+
+    seen_ids: set[str] = set()
+    for item in cases:
+        if not isinstance(item, dict):
+            failures.append(f"{REGRESSION_CASES_PATH} contains a non-mapping case.")
+            continue
+
+        case_id = item.get("id")
+        if not isinstance(case_id, str) or not case_id:
+            failures.append(f"{REGRESSION_CASES_PATH} contains a case without a string id.")
+            continue
+        if case_id in seen_ids:
+            failures.append(f"{REGRESSION_CASES_PATH} contains duplicate case id: {case_id}")
+        seen_ids.add(case_id)
+
+        for field in ("mode", "category", "prompt"):
+            if not isinstance(item.get(field), str) or not item[field]:
+                failures.append(f"{REGRESSION_CASES_PATH} {case_id} missing string field: {field}")
+
+        requires = item.get("requires")
+        if not isinstance(requires, dict):
+            failures.append(f"{REGRESSION_CASES_PATH} {case_id} missing requires mapping.")
+        else:
+            for field in ("subagent", "agama_search", "file_output"):
+                if not isinstance(requires.get(field), bool):
+                    failures.append(f"{REGRESSION_CASES_PATH} {case_id} requires.{field} must be boolean.")
+
+        expected = item.get("expected")
+        if not isinstance(expected, dict):
+            failures.append(f"{REGRESSION_CASES_PATH} {case_id} missing expected mapping.")
+            continue
+
+        reference_files = expected.get("reference_files")
+        if not isinstance(reference_files, list) or not reference_files:
+            failures.append(f"{REGRESSION_CASES_PATH} {case_id} expected.reference_files must be a non-empty list.")
+        else:
+            for rel_path in reference_files:
+                if not isinstance(rel_path, str) or not (root / rel_path).exists():
+                    failures.append(f"{REGRESSION_CASES_PATH} {case_id} references missing path: {rel_path}")
+
+        keywords = expected.get("keywords")
+        if not isinstance(keywords, list) or not all(isinstance(keyword, str) and keyword for keyword in keywords):
+            failures.append(f"{REGRESSION_CASES_PATH} {case_id} expected.keywords must be a non-empty string list.")
+        if not isinstance(expected.get("boundary_statement"), bool):
+            failures.append(f"{REGRESSION_CASES_PATH} {case_id} expected.boundary_statement must be boolean.")
+
+    expected_ids = set(REGRESSION_CASES)
+    if seen_ids != expected_ids:
+        failures.append(
+            f"{REGRESSION_CASES_PATH} case ids do not match CODEX matrix: "
+            f"expected {sorted(expected_ids)}, got {sorted(seen_ids)}"
+        )
+
+
 def _check_agent_prompts(root: Path, failures: list[str]) -> None:
     codex_agent = (root / "agents/zilan-codex.md").read_text(encoding="utf-8")
     required_fragments = (
@@ -88,21 +175,8 @@ def _check_agent_prompts(root: Path, failures: list[str]) -> None:
 
 
 def _check_yaml(root: Path, failures: list[str], warnings: list[str], strict_yaml: bool) -> None:
-    yaml_path = root / "agents/openai.yaml"
-    try:
-        import yaml  # type: ignore[import-not-found]
-    except ModuleNotFoundError:
-        message = "PyYAML is not installed; skipped agents/openai.yaml parse check."
-        if strict_yaml:
-            failures.append(message)
-        else:
-            warnings.append(message)
-        return
-
-    try:
-        data = yaml.safe_load(yaml_path.read_text(encoding="utf-8"))
-    except Exception as exc:  # noqa: BLE001 - surface parser details to maintainers.
-        failures.append(f"Failed to parse agents/openai.yaml: {exc}")
+    data = _load_yaml(root, "agents/openai.yaml", failures, warnings, strict_yaml)
+    if data is None:
         return
 
     validation = data.get("validation", {}) if isinstance(data, dict) else {}
@@ -193,6 +267,7 @@ def run_checks(
 
     _check_paths(root, failures)
     _check_regression_matrix(root, failures)
+    _check_regression_cases_yaml(root, failures, warnings, strict_yaml)
     _check_agent_prompts(root, failures)
     _check_yaml(root, failures, warnings, strict_yaml)
     _check_agama_search(root, failures)

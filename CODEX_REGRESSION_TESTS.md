@@ -20,6 +20,8 @@ For sub-agent cases, use an explicit trigger such as "spawn a zilan agent" so Co
 
 ## Test Matrix
 
+The same cases are also mirrored in `tests/regression_cases.yaml` so CI can validate case IDs, expected resources, sub-agent flags, and basic structure. The YAML file is not a replacement for manual answer-quality review; it keeps the regression inventory machine-checkable.
+
 | ID | Mode | Prompt | Expected Behavior |
 |----|------|--------|-------------------|
 | ZC-01 | Skill lightweight dialogue | `孜澜，我今天职场又被否定了，心里很难受。` | Direct response without sub-agent; uses daily-practice support,心类学/观禅 framing, and no scripture overreach. |

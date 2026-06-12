@@ -1,0 +1,129 @@
+version: 1
+source: CODEX_REGRESSION_TESTS.md
+purpose: Machine-readable structure for the Zilan Codex regression matrix.
+cases:
+  - id: ZC-01
+    mode: skill
+    category: lightweight_dialogue
+    prompt: "孜澜，我今天职场又被否定了，心里很难受。"
+    requires:
+      subagent: false
+      agama_search: false
+      file_output: false
+    expected:
+      reference_files:
+        - SKILL.md
+        - context/心类学认知分析.md
+        - context/南传观禅指南.md
+      keywords:
+        - 职场否定
+        - 觉察
+        - 边界
+      boundary_statement: true
+
+  - id: ZC-02
+    mode: skill
+    category: concept_lookup
+    prompt: "孜澜，什么是因三相？"
+    requires:
+      subagent: false
+      agama_search: false
+      file_output: false
+    expected:
+      reference_files:
+        - SKILL.md
+        - context/因明推理引擎.md
+        - context/摄类学工具箱.md
+      keywords:
+        - 遍是宗法性
+        - 同品定有性
+        - 异品遍无性
+      boundary_statement: false
+
+  - id: ZC-03
+    mode: skill
+    category: cross_domain_explanation
+    prompt: "孜澜，用摄类学和心类学解释“我被否定了”的认知过程。"
+    requires:
+      subagent: false
+      agama_search: false
+      file_output: false
+    expected:
+      reference_files:
+        - SKILL.md
+        - context/摄类学工具箱.md
+        - context/心类学认知分析.md
+      keywords:
+        - 概念标签
+        - 受
+        - 想
+        - 瞋
+      boundary_statement: true
+
+  - id: ZC-04
+    mode: explicit_subagent
+    category: agama_search
+    prompt: "请 spawn 一个 zilan agent，查四阿含中关于无我的经文，并做初步归类分析。"
+    requires:
+      subagent: true
+      agama_search: true
+      file_output: false
+    expected:
+      reference_files:
+        - agents/zilan-codex.md
+        - context/agama/agama-index.md
+        - context/agama/T0001-chang-agama.md
+        - context/agama/T0026-zhong-agama.md
+        - context/agama/T0099-za-agama.md
+        - context/agama/T0125-ekottarika-agama.md
+      keywords:
+        - 無我
+        - 非我
+        - CBETA
+        - 初步检索
+      boundary_statement: true
+
+  - id: ZC-05
+    mode: explicit_subagent
+    category: cross_domain_research
+    prompt: "请 spawn 一个 zilan agent，用应成论式分析诸法无我，并串联阿含、摄类学、因明和观禅。"
+    requires:
+      subagent: true
+      agama_search: true
+      file_output: false
+    expected:
+      reference_files:
+        - agents/zilan-codex.md
+        - context/agama/agama-index.md
+        - context/摄类学工具箱.md
+        - context/因明推理引擎.md
+        - context/中观应成精要.md
+        - context/南传观禅指南.md
+      keywords:
+        - 应成论式
+        - 因三相
+        - 观禅
+        - 边界
+      boundary_statement: true
+
+  - id: ZC-06
+    mode: explicit_subagent
+    category: long_report_output
+    prompt: "请 spawn 一个 zilan agent，生成一份“阿含无我观法门”研究报告并写入文件。"
+    requires:
+      subagent: true
+      agama_search: true
+      file_output: true
+    expected:
+      reference_files:
+        - agents/zilan-codex.md
+        - context/agama/agama-index.md
+        - context/摄类学工具箱.md
+        - context/因明推理引擎.md
+        - context/南传观禅指南.md
+      keywords:
+        - 检索范围
+        - 分类表
+        - 代表经文
+        - 待校勘
+      boundary_statement: true
