@@ -18,7 +18,7 @@ This document is the source of truth for Zilan's platform validation status. It 
 
 | Platform route | Status | Last validated | Evidence | Boundary |
 |---|---|---|---|---|
-| Codex | `tested` | 2026-06-10 | `docs/runtime-validation-log.md`, `CODEX_REGRESSION_TESTS.md`, `tests/regression_cases.yaml`, `agents/zilan-codex.md` | ZC-01 through ZC-06 passed with local Markdown context and explicit sub-agent triggers. CI validates the regression inventory and tooling; it does not grade answer quality. |
+| Codex | `tested` | 2026-06-12 | `docs/runtime-validation-log.md`, `CODEX_REGRESSION_TESTS.md`, `tests/regression_cases.yaml`, `agents/zilan-codex.md` | ZC-01 through ZC-06 passed in Codex on 2026-06-12 with local Markdown context. ZC-04 through ZC-06 used parent-observed sub-agent spawns. CI validates the regression inventory and tooling; it does not grade answer quality. |
 | Claude Code | `definition-versioned` | Not runtime-validated in this repository | `agents/zilan-claude-code.md` | The agent prompt is versioned. Actual behavior depends on the local Claude Code provider setup. |
 | OpenAI API | `metadata-only` | Not end-to-end tested | `agents/openai.yaml` | The YAML records portable metadata only. There is not yet an OpenAI API harness or automated conversation test. |
 | DeepSeek | `config-only` | Not end-to-end tested | `agents/openai.yaml`, `AGENT_UPGRADE_PORTABLE.md` | The Anthropic-compatible endpoint issue is documented in `AGENT_UPGRADE_PORTABLE.md`; do not mark this route tested until that integration is verified. |

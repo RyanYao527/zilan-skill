@@ -41,8 +41,8 @@ models:
 validation:
   codex:
     status: tested
-    date: "2026-06-10"
-    scope: "ZC-01 through ZC-06 passed in Codex with local Markdown context and explicit sub-agent triggers."
+    date: "2026-06-12"
+    scope: "ZC-01 through ZC-06 passed in Codex on 2026-06-12 with local Markdown context; ZC-04 through ZC-06 used parent-observed sub-agent spawns."
   claude_code:
     status: definition-versioned
     scope: "Claude Code Agent prompt is versioned at agents/zilan-claude-code.md; runtime behavior depends on the local Claude Code provider setup."

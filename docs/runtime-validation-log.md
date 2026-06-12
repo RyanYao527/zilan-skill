@@ -56,6 +56,46 @@ Use conservative status labels:
 - CI validates case inventory, prompt contracts, search behavior, and repository invariants; it does not grade answer quality.
 - Future prompt or routing changes should append a new entry rather than editing this historical baseline in place.
 
+## 2026-06-12 Codex Rerun
+
+| Field | Value |
+|---|---|
+| Runtime | Codex |
+| Provider / model | Codex current session; exact model ID not recorded in repository evidence |
+| Tool version | Codex session with `multi_agent_v1.spawn_agent` and `multi_agent_v1.wait_agent` available |
+| Repository commit | `8079c1b7a455cb60e2c6560577c45d452f53b6f4` |
+| Branch | `codex/runtime-validation-rerun-20260612` |
+| Prompt set | ZC-01 through ZC-06 from `CODEX_REGRESSION_TESTS.md` and `tests/regression_cases.yaml` |
+| Transcript status | Summarized here; full transcripts are not committed. Parent session recorded sub-agent IDs for ZC-04 through ZC-06. ZC-06 also wrote a report to `C:\tmp\zilan-validation-20260612-ZC06.md`, outside the repository. |
+| Repository checks | `python -m ruff check scripts tests` pass; `python -m pytest` pass; `python scripts\validate_zilan_repo.py --check-generated --strict-yaml` pass |
+| Overall result | `pass` with the limitations below |
+
+### Case Results
+
+| Case | Mode | Result | Notes |
+|---|---|---|---|
+| ZC-01 | Skill lightweight dialogue | `pass` | Main Codex session, no sub-agent. Covered daily-practice support with psychology / vipassana framing, avoided scripture overreach, and stated practice boundaries. |
+| ZC-02 | Skill concept lookup | `pass` | Main Codex session, no sub-agent. Explained the three characteristics of a valid reason: `遍是宗法性`, `同品定有性`, and `异品遍无性`, with the expected Collected Topics relation. |
+| ZC-03 | Skill cross-domain explanation | `pass` | Main Codex session, no sub-agent. Combined Collected Topics and Buddhist psychology, distinguishing fact, concept label, feeling / perception, and anger, with a practice boundary. |
+| ZC-04 | Explicit sub-agent Agama search | `pass` | Spawned sub-agent `019eba77-1d09-79e1-b853-ada7ab3ff31c` (`Popper`). It searched local Agama Markdown, excluded `_source/` XML, reported 282 script matches, grouped the evidence into six doctrinal categories, supplied CBETA / fascicle / local-line citations, and stated search limits. |
+| ZC-05 | Explicit sub-agent cross-domain research | `pass` | Spawned sub-agent `019eba77-5d1a-7032-9bec-2d71c2715f9b` (`Russell`). It connected Agama, Collected Topics, Buddhist logic, Madhyamaka, and vipassana, supplied local citations, and stated practice and textual inference boundaries. |
+| ZC-06 | Long report output | `pass` | Spawned sub-agent `019eba77-7e15-7992-886b-4a9b9b866a25` (`Raman`). It wrote `C:\tmp\zilan-validation-20260612-ZC06.md`, searched local Agama Markdown with `_source/` excluded, reported passage counts by corpus, produced a long report with citations, and stated non-exhaustive / non-practice-certification boundaries. |
+
+### Sub-Agent Evidence
+
+| Case | Parent-observed agent ID | Evidence |
+|---|---|---|
+| ZC-04 | `019eba77-1d09-79e1-b853-ada7ab3ff31c` | Completion notification returned the Agama search summary, search commands, match counts, representative citations, and boundary statement. |
+| ZC-05 | `019eba77-5d1a-7032-9bec-2d71c2715f9b` | Completion notification returned the cross-domain doctrinal answer, representative citations, and boundary statement. |
+| ZC-06 | `019eba77-7e15-7992-886b-4a9b9b866a25` | Completion notification confirmed file output at `C:\tmp\zilan-validation-20260612-ZC06.md`; the file was read and summarized for this log. |
+
+### Known Limits
+
+- Full prompts and answer transcripts are summarized, not committed verbatim.
+- Sub-agents cannot self-observe the parent session's spawn handle, so their self-reports mark sub-agent verification as partial. Parent-observed agent IDs are the runtime evidence for ZC-04 through ZC-06.
+- ZC-04 surfaced residual false positives such as non-doctrinal `無我` contexts that require manual screening after keyword search.
+- One shell attempt to read a local installed skill path failed under the Windows sandbox. The rerun used the repository-local `SKILL.md`, agent prompt, and context files successfully.
+
 ## Next Validation Entries
 
 Use this template for future manual sessions:
