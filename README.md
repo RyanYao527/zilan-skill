@@ -55,8 +55,10 @@ cp zilan-agent/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
 | `docs/platform-validation.md` | 平台验证状态 · Platform validation status |
 | `docs/runtime-validation-log.md` | 运行验证记录 · Runtime validation log |
 | `docs/maintenance-roadmap.md` | 维护路线图 · Maintenance roadmap |
+| `docs/openai-api-harness.md` | OpenAI API harness 说明 · OpenAI API harness guide |
 | `scripts/validate_zilan_repo.py` | 仓库结构与语料 smoke 校验 · Repository invariant checks |
 | `scripts/search_agama.py` | 阿含 Markdown 检索工具 · Agama Markdown search helper |
+| `scripts/openai_api_harness.py` | OpenAI Responses API dry-run/live harness |
 | `.github/workflows/ci.yml` | 自动化校验 · Automated CI checks |
 | `context/摄类学工具箱.md` | 摄类学推理工具链 · Collected Topics reasoning toolkit |
 | `context/因明推理引擎.md` | 因明逻辑引擎 · Buddhist logic engine |
@@ -76,6 +78,7 @@ cp zilan-agent/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
 ## ✅ Compatibility status · 兼容性状态
 
 - **Platform status**: `agents/openai.yaml` is the machine-readable metadata source; `docs/platform-validation.md` records status definitions, validation evidence, and update rules.
+- **Current validation**: Codex and Claude Code are runtime-tested as of 2026-06-12; OpenAI API is `harness-ready` with dry-run tests and awaits a live `OPENAI_API_KEY` run.
 - **Runtime boundary**: Codex, Claude Code, OpenAI API, DeepSeek, GLM, and Qwen routes must not be described as tested unless the platform validation document says so.
 - **Scholarly collation**: local Agama Markdown is a searchable working corpus; publication-level work should verify against CBETA XML and parallel texts.
 
@@ -86,6 +89,7 @@ cp zilan-agent/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
 ```bash
 python scripts/validate_zilan_repo.py --check-generated
 python -m pytest
+python scripts/openai_api_harness.py --case ZC-02 --json
 python scripts/search_agama.py --terms "無我|非我|緣起" --limit 10
 python scripts/search_agama.py --terms "非我" --passages --group-by juan --limit 10
 python scripts/search_agama.py --terms "緣起" --json --limit 5

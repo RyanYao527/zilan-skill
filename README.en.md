@@ -2,7 +2,7 @@
 
 > Independent cognitive framework based on Upāsaka Yao Lei's Buddhist study system · Available to answer questions for others
 
-**Version**: v2.3 | **Established**: 2026-06-02 | **Last Updated**: 2026-06-10 | **Name**: Zilan (孜澜)
+**Version**: v2.4 | **Established**: 2026-06-02 | **Last Updated**: 2026-06-12 | **Name**: Zilan (孜澜)
 
 ---
 
@@ -98,7 +98,7 @@ She is not anyone's "digital persona" or "AI substitute" — she has her own cul
 
 ## Skill / Agent Dual Track
 
-Zilan v2.3 uses a dual-track design:
+Zilan v2.4 uses a dual-track design:
 
 | Mode | Best For | Entry |
 |------|----------|-------|
@@ -155,6 +155,7 @@ This repository includes executable repository invariant checks, Agama search sm
 ```bash
 python scripts/validate_zilan_repo.py --check-generated
 python -m pytest
+python scripts/openai_api_harness.py --case ZC-02 --json
 python scripts/search_agama.py --terms "無我|非我|緣起" --limit 10
 python scripts/search_agama.py --terms "非我" --passages --group-by juan --limit 10
 python scripts/search_agama.py --terms "緣起" --json --limit 5
@@ -162,7 +163,7 @@ python scripts/search_agama.py --terms "緣起" --json --limit 5
 
 GitHub Actions runs the same class of checks on push and pull request.
 
-`search_agama.py` excludes `_source/` XML by default and filters known keyword collisions such as `非我宜` and `非我所說`; use `--false-positive-phrase` to add temporary filters.
+`search_agama.py` excludes `_source/` XML by default and filters known keyword collisions such as `非我宜`, `非我所說`, and `無我活為`; use `--false-positive-phrase` to add temporary filters.
 
 Text and JSON output include stable citation fields with sutra name, CBETA ID, fascicle, and local Markdown line references, for example `《雜阿含經》(T02n0099) 卷 1, context/agama/T0099-za-agama.md:33`.
 
@@ -175,6 +176,7 @@ Manual runtime validation evidence is tracked in `docs/runtime-validation-log.md
 ## Compatibility And Collation Boundaries
 
 - **Platform status**: `agents/openai.yaml` is the machine-readable metadata source; `docs/platform-validation.md` records status definitions, validation evidence, and update rules.
+- **Current validation**: Codex and Claude Code were runtime-tested on 2026-06-12; OpenAI API has a dry-run harness and still needs live `OPENAI_API_KEY` evidence before it is end-to-end tested.
 - **Runtime boundary**: Codex, Claude Code, OpenAI API, DeepSeek, GLM, and Qwen routes must not be described as tested unless the platform validation document says so.
 - **Scholarly collation**: the local Agama Markdown files are a searchable working corpus; publication-level citation should verify against CBETA XML and relevant parallel texts.
 

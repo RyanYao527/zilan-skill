@@ -44,7 +44,7 @@ rg -n --glob '!**/_source/**' --max-count 10 "無我|非我|無我所|五陰|五
 rg -n --glob '!**/_source/**' --max-count 10 "因三相|性相|心所|應成|十六觀智" "context"
 ```
 
-`scripts/search_agama.py` excludes `_source/` XML by default, filters known keyword collisions such as `非我宜` and `非我所說`, supports `--group-by file|juan`, can aggregate paragraph-like passages with `--passages`, and emits stable citation fields such as `《雜阿含經》(T02n0099) 卷 1, context/agama/T0099-za-agama.md:33`.
+`scripts/search_agama.py` excludes `_source/` XML by default, filters known keyword collisions such as `非我宜`, `非我所說`, and `無我活為`, supports `--group-by file|juan`, can aggregate paragraph-like passages with `--passages`, and emits stable citation fields such as `《雜阿含經》(T02n0099) 卷 1, context/agama/T0099-za-agama.md:33`.
 
 ## Known Boundaries
 
