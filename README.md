@@ -85,6 +85,8 @@ cp zilan-agent/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
 python scripts/validate_zilan_repo.py --check-generated
 python -m pytest
 python scripts/search_agama.py --terms "無我|非我|緣起" --limit 10
+python scripts/search_agama.py --terms "非我" --passages --group-by juan --limit 10
+python scripts/search_agama.py --terms "緣起" --json --limit 5
 ```
 
 GitHub Actions runs the same invariant checks, tests, and Agama search smoke test on push and pull request.

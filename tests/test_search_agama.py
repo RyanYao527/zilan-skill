@@ -1,8 +1,12 @@
+import json
+import subprocess
+import sys
 from pathlib import Path
 
-from search_agama import iter_agama_markdown_files, search_agama
+from search_agama import iter_agama_markdown_files, search_agama, search_agama_passages
 
 ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = ROOT / "scripts" / "search_agama.py"
 
 
 def test_agama_file_iterator_excludes_index_and_xml_sources() -> None:
@@ -36,3 +40,48 @@ def test_search_can_include_context_lines() -> None:
 
     assert matches
     assert matches[0].context_before or matches[0].context_after
+
+
+def test_search_can_extend_false_positive_filter() -> None:
+    matches = search_agama("無我", root=ROOT, limit=10, false_positive_phrases=("無我；",))
+
+    assert matches
+    assert all("無我；" not in match.text for match in matches)
+
+
+def test_search_can_aggregate_by_passage() -> None:
+    passages = search_agama_passages("非我", root=ROOT, limit=5)
+
+    assert passages
+    assert all(passage.start_line <= passage.end_line for passage in passages)
+    assert all(passage.matched_lines for passage in passages)
+    assert len({(passage.file, passage.start_line, passage.end_line) for passage in passages}) == len(passages)
+
+
+def test_search_json_cli_output_is_machine_readable() -> None:
+    result = subprocess.run(
+        [sys.executable, str(SCRIPT), "--terms", "緣起", "--limit", "2", "--json"],
+        cwd=ROOT,
+        text=True,
+        encoding="utf-8",
+        capture_output=True,
+        check=True,
+    )
+    data = json.loads(result.stdout)
+
+    assert len(data) == 2
+    assert {"file", "line", "juan", "text"}.issubset(data[0])
+
+
+def test_search_text_cli_can_group_by_juan() -> None:
+    result = subprocess.run(
+        [sys.executable, str(SCRIPT), "--terms", "緣起", "--limit", "2", "--group-by", "juan"],
+        cwd=ROOT,
+        text=True,
+        encoding="utf-8",
+        capture_output=True,
+        check=True,
+    )
+
+    assert "## context/agama/" in result.stdout
+    assert "卷" in result.stdout

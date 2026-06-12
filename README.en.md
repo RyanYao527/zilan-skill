@@ -156,9 +156,13 @@ This repository includes executable repository invariant checks, Agama search sm
 python scripts/validate_zilan_repo.py --check-generated
 python -m pytest
 python scripts/search_agama.py --terms "無我|非我|緣起" --limit 10
+python scripts/search_agama.py --terms "非我" --passages --group-by juan --limit 10
+python scripts/search_agama.py --terms "緣起" --json --limit 5
 ```
 
 GitHub Actions runs the same class of checks on push and pull request.
+
+`search_agama.py` excludes `_source/` XML by default and filters known keyword collisions such as `非我宜` and `非我所說`; use `--false-positive-phrase` to add temporary filters.
 
 ---
 

@@ -160,9 +160,13 @@ Codex 回归测试矩阵见：`CODEX_REGRESSION_TESTS.md`。
 python scripts/validate_zilan_repo.py --check-generated
 python -m pytest
 python scripts/search_agama.py --terms "無我|非我|緣起" --limit 10
+python scripts/search_agama.py --terms "非我" --passages --group-by juan --limit 10
+python scripts/search_agama.py --terms "緣起" --json --limit 5
 ```
 
 GitHub Actions 会在 push 和 pull request 时自动运行同类检查。
+
+`search_agama.py` 默认排除 `_source/` XML，并过滤 `非我宜`、`非我所說` 等已知误命中；可用 `--false-positive-phrase` 临时追加过滤短语。
 
 ---
 

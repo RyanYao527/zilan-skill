@@ -36,11 +36,13 @@ Use these from PowerShell when validating the local knowledge base. Run them fro
 ```powershell
 python scripts/validate_zilan_repo.py --check-generated
 python scripts/search_agama.py --terms "無我|非我|無我所|五陰|五受陰|緣起" --limit 10
+python scripts/search_agama.py --terms "非我" --passages --group-by juan --limit 10
+python scripts/search_agama.py --terms "緣起" --json --limit 5
 rg -n --glob '!**/_source/**' --max-count 10 "無我|非我|無我所|五陰|五受陰|緣起" "context\agama"
 rg -n --glob '!**/_source/**' --max-count 10 "因三相|性相|心所|應成|十六觀智" "context"
 ```
 
-`scripts/search_agama.py` excludes `_source/` XML by default and filters known keyword collisions such as `非我宜` and `非我所說`.
+`scripts/search_agama.py` excludes `_source/` XML by default, filters known keyword collisions such as `非我宜` and `非我所說`, supports `--group-by file|juan`, and can aggregate paragraph-like passages with `--passages`.
 
 ## Known Boundaries
 
