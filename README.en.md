@@ -166,6 +166,8 @@ GitHub Actions runs the same class of checks on push and pull request.
 
 Text and JSON output include stable citation fields with sutra name, CBETA ID, fascicle, and local Markdown line references, for example `《雜阿含經》(T02n0099) 卷 1, context/agama/T0099-za-agama.md:33`.
 
+Maintenance priorities and release guardrails are tracked in `docs/maintenance-roadmap.md`.
+
 ---
 
 ## Compatibility And Collation Boundaries
