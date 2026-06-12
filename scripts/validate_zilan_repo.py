@@ -19,6 +19,7 @@ REQUIRED_FILES = (
     "CODEX_REGRESSION_TESTS.md",
     "AGENT_UPGRADE_PORTABLE.md",
     "docs/platform-validation.md",
+    "docs/runtime-validation-log.md",
     "docs/maintenance-roadmap.md",
     "LICENSE",
     "CONTRIBUTING.md",
@@ -61,6 +62,7 @@ REGRESSION_CASES = ("ZC-01", "ZC-02", "ZC-03", "ZC-04", "ZC-05", "ZC-06")
 REGRESSION_CASES_PATH = "tests/regression_cases.yaml"
 README_FILES = ("README.md", "README.zh.md", "README.en.md")
 PLATFORM_VALIDATION_DOC = "docs/platform-validation.md"
+RUNTIME_VALIDATION_LOG_DOC = "docs/runtime-validation-log.md"
 MAINTENANCE_ROADMAP_DOC = "docs/maintenance-roadmap.md"
 ALLOWED_VALIDATION_STATUSES = (
     "tested",
@@ -305,10 +307,29 @@ def _check_readme_platform_validation_links(root: Path, failures: list[str]) -> 
         text = (root / rel_path).read_text(encoding="utf-8")
         if PLATFORM_VALIDATION_DOC not in text:
             failures.append(f"{rel_path} should link to {PLATFORM_VALIDATION_DOC}.")
+        if RUNTIME_VALIDATION_LOG_DOC not in text:
+            failures.append(f"{rel_path} should link to {RUNTIME_VALIDATION_LOG_DOC}.")
         if MAINTENANCE_ROADMAP_DOC not in text:
             failures.append(f"{rel_path} should link to {MAINTENANCE_ROADMAP_DOC}.")
         if "agents/openai.yaml" not in text:
             failures.append(f"{rel_path} should mention agents/openai.yaml as platform metadata.")
+
+
+def _check_runtime_validation_log(root: Path, failures: list[str]) -> None:
+    text = (root / RUNTIME_VALIDATION_LOG_DOC).read_text(encoding="utf-8")
+    required_fragments = (
+        "2026-06-10",
+        "Codex",
+        "CODEX_REGRESSION_TESTS.md",
+        "docs/platform-validation.md",
+        "Transcript status",
+    )
+    for fragment in required_fragments:
+        if fragment not in text:
+            failures.append(f"{RUNTIME_VALIDATION_LOG_DOC} missing required fragment: {fragment}")
+    for case in REGRESSION_CASES:
+        if case not in text:
+            failures.append(f"{RUNTIME_VALIDATION_LOG_DOC} missing regression case: {case}")
 
 
 def _check_yaml(root: Path, failures: list[str], warnings: list[str], strict_yaml: bool) -> None:
@@ -410,6 +431,7 @@ def run_checks(
     _check_regression_cases_yaml(root, failures, warnings, strict_yaml)
     _check_agent_prompts(root, failures)
     _check_readme_platform_validation_links(root, failures)
+    _check_runtime_validation_log(root, failures)
     _check_yaml(root, failures, warnings, strict_yaml)
     _check_agama_search(root, failures)
     if check_generated:

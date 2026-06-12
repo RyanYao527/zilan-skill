@@ -172,6 +172,8 @@ GitHub Actions 会在 push 和 pull request 时自动运行同类检查。
 
 维护优先级与发布守则见：`docs/maintenance-roadmap.md`。
 
+人工运行验证证据见：`docs/runtime-validation-log.md`。
+
 ---
 
 ## 兼容性与校勘边界

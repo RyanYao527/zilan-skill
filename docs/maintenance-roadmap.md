@@ -12,6 +12,7 @@ This roadmap records engineering maintenance state and next priorities for zilan
 | Repository invariants | `scripts/validate_zilan_repo.py` checks required files, context files, YAML shape, regression inventory, platform status consistency, agent prompt contracts, and Agama search behavior. |
 | Regression inventory | `CODEX_REGRESSION_TESTS.md` is mirrored by `tests/regression_cases.yaml`; CI validates structure, resources, and case IDs. |
 | Platform status | `agents/openai.yaml` is the machine-readable source; `docs/platform-validation.md` is the human-readable validation record. |
+| Runtime validation | `docs/runtime-validation-log.md` records manual runtime validation sessions and transcript availability. |
 | Agama search | `scripts/search_agama.py` searches Markdown only by default, filters known false positives, supports passage grouping, emits JSON, and provides stable `citation` / `passage_citation` fields. |
 | Agent prompts | Codex and Claude agent prompts are checked for the Agama citation contract and must prefer `search_agama.py --json` citation fields when available. |
 
@@ -27,8 +28,8 @@ This roadmap records engineering maintenance state and next priorities for zilan
 
 | Priority | Track | Work | Done when |
 |---|---|---|---|
-| P0 | Runtime validation | Re-run ZC-01 through ZC-06 after prompt or routing changes. | A dated manual validation note records prompts, observed behavior, failures, and checks run. |
-| P1 | Validation evidence | Add a `docs/runtime-validation-log.md` or equivalent record for manual Codex and Claude Code sessions. | Runtime results are auditable without relying on chat history. |
+| P0 | Runtime validation | Re-run ZC-01 through ZC-06 after prompt or routing changes and append to `docs/runtime-validation-log.md`. | A dated manual validation note records prompts, observed behavior, failures, transcript status, and checks run. |
+| P1 | Validation evidence | Replace summarized baselines with transcript-backed Codex and Claude Code sessions where practical. | Runtime results are auditable without relying on chat history. |
 | P1 | Claude Code route | Run the Claude Code agent definition against the same lightweight, concept, Agama, and long-report scenarios. | `docs/platform-validation.md` can move Claude Code beyond `definition-versioned` only if evidence supports it. |
 | P1 | OpenAI API route | Build a small API harness that loads the portable metadata and runs a bounded prompt suite. | OpenAI API status has runnable evidence, not just YAML metadata. |
 | P1 | Provider routes | Validate or explicitly block DeepSeek, GLM, and Qwen route assumptions. | Each route has a dated tested or blocked entry with provider/model details and failure modes. |

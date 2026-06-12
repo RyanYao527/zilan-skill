@@ -53,6 +53,7 @@ cp zilan-agent/agents/zilan-claude-code.md ~/.claude/agents/zilan.md
 | `agents/openai.yaml` | 跨平台 Agent 配置 · Cross-platform Agent metadata |
 | `CODEX_REGRESSION_TESTS.md` | Codex 回归测试矩阵 · Codex regression matrix |
 | `docs/platform-validation.md` | 平台验证状态 · Platform validation status |
+| `docs/runtime-validation-log.md` | 运行验证记录 · Runtime validation log |
 | `docs/maintenance-roadmap.md` | 维护路线图 · Maintenance roadmap |
 | `scripts/validate_zilan_repo.py` | 仓库结构与语料 smoke 校验 · Repository invariant checks |
 | `scripts/search_agama.py` | 阿含 Markdown 检索工具 · Agama Markdown search helper |
@@ -95,6 +96,8 @@ GitHub Actions runs the same invariant checks, tests, and Agama search smoke tes
 `search_agama.py` text and JSON output include stable citation fields with sutra name, CBETA ID,卷, and local Markdown line references, for example `《雜阿含經》(T02n0099) 卷 1, context/agama/T0099-za-agama.md:33`.
 
 Maintenance priorities and release guardrails are tracked in `docs/maintenance-roadmap.md`.
+
+Manual runtime validation evidence is tracked in `docs/runtime-validation-log.md`.
 
 ---
 

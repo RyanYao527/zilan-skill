@@ -168,6 +168,8 @@ Text and JSON output include stable citation fields with sutra name, CBETA ID, f
 
 Maintenance priorities and release guardrails are tracked in `docs/maintenance-roadmap.md`.
 
+Manual runtime validation evidence is tracked in `docs/runtime-validation-log.md`.
+
 ---
 
 ## Compatibility And Collation Boundaries
