@@ -19,6 +19,7 @@ DEFAULT_PATTERN = (
 DEFAULT_FALSE_POSITIVE_PHRASES = (
     "非我宜",
     "非我所說",
+    "無我活為",
 )
 
 

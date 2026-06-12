@@ -33,11 +33,14 @@ def test_search_returns_auditable_markdown_locations() -> None:
 
 
 def test_search_filters_known_false_positive_phrases() -> None:
-    matches = search_agama("非我", root=ROOT, limit=100)
+    unfiltered = search_agama("無我活為", root=ROOT, limit=10, include_false_positives=True)
+    matches = search_agama("無我|非我", root=ROOT, limit=0)
 
+    assert any("汝無我活為" in match.text for match in unfiltered)
     assert matches
     assert all("非我宜" not in match.text for match in matches)
     assert all("非我所說" not in match.text for match in matches)
+    assert all("無我活為" not in match.text for match in matches)
 
 
 def test_search_can_include_context_lines() -> None:

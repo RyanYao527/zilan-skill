@@ -6,7 +6,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from search_agama import search_agama
+from search_agama import DEFAULT_FALSE_POSITIVE_PHRASES, search_agama
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -356,8 +356,11 @@ def _check_agama_search(root: Path, failures: list[str]) -> None:
     if any("_source" in match.file for match in matches):
         failures.append("Agama smoke search should not return _source XML matches.")
 
-    false_positive_check = search_agama("非我", root=root, limit=100)
-    if any("非我宜" in match.text or "非我所說" in match.text for match in false_positive_check):
+    false_positive_check = search_agama("無我|非我", root=root, limit=0)
+    if any(
+        any(phrase in match.text for phrase in DEFAULT_FALSE_POSITIVE_PHRASES)
+        for match in false_positive_check
+    ):
         failures.append("Agama search did not filter known false positives.")
 
 
