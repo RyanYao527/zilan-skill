@@ -10,6 +10,7 @@ This document is the source of truth for Zilan's platform validation status. It 
 |---|---|
 | `tested` | A documented runtime or manual regression pass exists for the route, with date, scope, and known limits. |
 | `definition-versioned` | The prompt or agent definition is versioned in this repository, but runtime behavior depends on a local tool or provider setup not validated by CI. |
+| `harness-ready` | A runnable harness exists and is covered by repository checks, but live end-to-end provider execution has not been recorded. |
 | `metadata-only` | Portable metadata exists, but there is no runnable end-to-end harness in this repository yet. |
 | `config-only` | Provider configuration exists, but the route has not been end-to-end tested. |
 | `blocked` | Validation is intentionally blocked by missing access, provider behavior, or an unresolved integration issue. |
@@ -19,8 +20,8 @@ This document is the source of truth for Zilan's platform validation status. It 
 | Platform route | Status | Last validated | Evidence | Boundary |
 |---|---|---|---|---|
 | Codex | `tested` | 2026-06-12 | `docs/runtime-validation-log.md`, `CODEX_REGRESSION_TESTS.md`, `tests/regression_cases.yaml`, `agents/zilan-codex.md` | ZC-01 through ZC-06 passed in Codex on 2026-06-12 with local Markdown context. ZC-04 through ZC-06 used parent-observed sub-agent spawns. CI validates the regression inventory and tooling; it does not grade answer quality. |
-| Claude Code | `definition-versioned` | Not runtime-validated in this repository | `agents/zilan-claude-code.md` | The agent prompt is versioned. Actual behavior depends on the local Claude Code provider setup. |
-| OpenAI API | `metadata-only` | Not end-to-end tested | `agents/openai.yaml` | The YAML records portable metadata only. There is not yet an OpenAI API harness or automated conversation test. |
+| Claude Code | `tested` | 2026-06-12 | `docs/runtime-validation-log.md`, `CODEX_REGRESSION_TESTS.md`, `tests/regression_cases.yaml`, `agents/zilan-claude-code.md` | ZC-01 through ZC-06 passed through Claude Code CLI 2.1.169 with the repository agent prompt loaded. The noninteractive direct prompt-file route is tested; background auto-spawn behavior is not separately audited. |
+| OpenAI API | `harness-ready` | Dry-run harness: 2026-06-12 | `scripts/openai_api_harness.py`, `tests/test_openai_api_harness.py`, `docs/openai-api-harness.md`, `agents/openai.yaml` | The harness builds OpenAI Responses API requests and is covered by pytest. Live `--live` execution is not yet recorded and requires `OPENAI_API_KEY`. |
 | DeepSeek | `config-only` | Not end-to-end tested | `agents/openai.yaml`, `AGENT_UPGRADE_PORTABLE.md` | The Anthropic-compatible endpoint issue is documented in `AGENT_UPGRADE_PORTABLE.md`; do not mark this route tested until that integration is verified. |
 | GLM | `config-only` | Not end-to-end tested | `agents/openai.yaml` | Provider metadata exists, but no runtime transcript or harness is committed. |
 | Qwen | `config-only` | Not end-to-end tested | `agents/openai.yaml` | Provider metadata exists, but no runtime transcript or harness is committed. |
@@ -63,11 +64,19 @@ python scripts/search_agama.py --terms "非我" --passages --group-by juan --lim
 python scripts/search_agama.py --terms "緣起" --json --limit 5
 ```
 
-The helper excludes `_source/` XML by default and filters known collisions such as `非我宜` and `非我所說`.
+The helper excludes `_source/` XML by default and filters known collisions such as `非我宜`, `非我所說`, and `無我活為`.
+
+### Claude Code Runtime
+
+Claude Code answer quality is validated manually with the same ZC prompt family where practical. The 2026-06-12 run used `claude -p` noninteractive mode with `agents/zilan-claude-code.md` appended as the agent prompt and local repository tools enabled per case. Treat this as validation of the Claude Code CLI plus repository prompt route, not as proof that every user's installed `~/.claude/skills` path is current.
+
+### OpenAI API Harness
+
+The OpenAI API route has a minimal harness at `scripts/openai_api_harness.py`. Dry-run mode builds a Responses API request from `agents/openai.yaml`, `tests/regression_cases.yaml`, and bounded local context. Live mode requires `OPENAI_API_KEY` and `--live`; do not mark OpenAI API `tested` until a dated live run is recorded.
 
 ### Provider Routes
 
-Before changing a route from `metadata-only` or `config-only` to `tested`, commit or document:
+Before changing a route from `metadata-only`, `harness-ready`, or `config-only` to `tested`, commit or document:
 
 - date of validation
 - provider and model ID

@@ -15,6 +15,11 @@ interface:
 # ── 模型配置 ──────────────────────────────────────────
 
 models:
+  openai_api:
+    provider: openai
+    model_id: gpt-5.5
+    description: OpenAI Responses API 默认模型；由 scripts/openai_api_harness.py dry-run/live 调用
+
   claude:
     provider: anthropic
     model_id: claude-opus-4-8
@@ -44,11 +49,13 @@ validation:
     date: "2026-06-12"
     scope: "ZC-01 through ZC-06 passed in Codex on 2026-06-12 with local Markdown context; ZC-04 through ZC-06 used parent-observed sub-agent spawns."
   claude_code:
-    status: definition-versioned
-    scope: "Claude Code Agent prompt is versioned at agents/zilan-claude-code.md; runtime behavior depends on the local Claude Code provider setup."
+    status: tested
+    date: "2026-06-12"
+    scope: "ZC-01 through ZC-06 passed through Claude Code CLI 2.1.169 with agents/zilan-claude-code.md loaded; noninteractive direct agent-prompt route tested, background auto-spawn not separately audited."
   openai_api:
-    status: metadata-only
-    scope: "This YAML records portable metadata; it is not yet an end-to-end OpenAI API harness."
+    status: harness-ready
+    date: "2026-06-12"
+    scope: "scripts/openai_api_harness.py builds OpenAI Responses API requests from agents/openai.yaml and regression cases; dry-run is tested, live --live execution still requires OPENAI_API_KEY evidence."
   deepseek:
     status: config-only
     scope: "Not end-to-end tested in this PR; the Anthropic-compatible endpoint issue is documented in AGENT_UPGRADE_PORTABLE.md."

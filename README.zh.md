@@ -2,7 +2,7 @@
 
 > 基于优婆塞姚磊佛学体系的独立认知框架 · 可为他人答疑解惑
 
-**版本**：v2.3 | **确立日期**：2026-06-02 | **最后更新**：2026-06-10 | **名字**：孜澜
+**版本**：v2.4 | **确立日期**：2026-06-02 | **最后更新**：2026-06-12 | **名字**：孜澜
 
 ---
 
@@ -102,7 +102,7 @@
 
 ## Skill / Agent 双轨模式
 
-孜澜 v2.3 采用双轨设计：
+孜澜 v2.4 采用双轨设计：
 
 | 模式 | 适用任务 | 入口 |
 |------|----------|------|
@@ -159,6 +159,7 @@ Codex 回归测试矩阵见：`CODEX_REGRESSION_TESTS.md`。
 ```bash
 python scripts/validate_zilan_repo.py --check-generated
 python -m pytest
+python scripts/openai_api_harness.py --case ZC-02 --json
 python scripts/search_agama.py --terms "無我|非我|緣起" --limit 10
 python scripts/search_agama.py --terms "非我" --passages --group-by juan --limit 10
 python scripts/search_agama.py --terms "緣起" --json --limit 5
@@ -166,7 +167,7 @@ python scripts/search_agama.py --terms "緣起" --json --limit 5
 
 GitHub Actions 会在 push 和 pull request 时自动运行同类检查。
 
-`search_agama.py` 默认排除 `_source/` XML，并过滤 `非我宜`、`非我所說` 等已知误命中；可用 `--false-positive-phrase` 临时追加过滤短语。
+`search_agama.py` 默认排除 `_source/` XML，并过滤 `非我宜`、`非我所說`、`無我活為` 等已知误命中；可用 `--false-positive-phrase` 临时追加过滤短语。
 
 文本与 JSON 输出会包含稳定引用字段，包括经名、CBETA 编号、卷和本地 Markdown 行号，例如：`《雜阿含經》(T02n0099) 卷 1, context/agama/T0099-za-agama.md:33`。
 
@@ -179,6 +180,7 @@ GitHub Actions 会在 push 和 pull request 时自动运行同类检查。
 ## 兼容性与校勘边界
 
 - **平台状态**：`agents/openai.yaml` 是机器可读的跨平台元数据来源；`docs/platform-validation.md` 记录状态定义、验证证据与更新规则。
+- **当前验证**：Codex 与 Claude Code 已在 2026-06-12 完成运行复测；OpenAI API 已具备 dry-run harness，仍需 `OPENAI_API_KEY` live 证据后才能标为端到端 tested。
 - **运行边界**：Codex、Claude Code、OpenAI API、DeepSeek、GLM、千问等路线，只有在平台验证文档中满足定义后，才可称为已测试。
 - **学术校勘**：本地阿含 Markdown 是可检索工作语料；面向发表或严肃引用时，应回校 CBETA XML，并视需要比对平行译本与巴利对应文本。
 

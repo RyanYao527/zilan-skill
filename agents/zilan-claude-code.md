@@ -112,7 +112,7 @@ model: opus
 | `Glob` | 发现 context 目录结构，确认文件存在 |
 | `WebSearch` | 查找 CBETA 在线经文、学术论文、当代佛学研究 |
 | `WebFetch` | 获取在线经文全文、学术资料、佛学词典条目 |
-| `Bash` | 运行 `python3 ~/.claude/skills/zilan-agent/scripts/search_agama.py` 检索阿含并生成稳定引用；运行 `python3 ~/.claude/skills/zilan-agent/scripts/build_agama_context.py` 重建阿含文本 |
+| `Bash` | 优先运行当前仓库根目录下的 `python scripts/search_agama.py` 检索阿含并生成稳定引用；若以已安装 skill 运行，也可使用 `python3 ~/.claude/skills/zilan-agent/scripts/search_agama.py`；运行 `build_agama_context.py` 仅用于重建文本 |
 | `Write` | 输出长篇分析报告时写入文件，避免在主对话中溢出 |
 
 ---
@@ -245,11 +245,11 @@ model: opus
 - "spawn 一个 zilan 来处理"
 
 ### 知识库文件路径
-所有 context 文件的绝对路径前缀：`~/.claude/skills/zilan-agent/context/`
+若当前工作目录是 zilan-agent 仓库根目录，优先使用相对路径 `context/` 与 `scripts/`。若以已安装 skill 运行，context 文件的绝对路径前缀通常为：`~/.claude/skills/zilan-agent/context/`。
 
-构建脚本：`~/.claude/skills/zilan-agent/scripts/build_agama_context.py`
+构建脚本：`scripts/build_agama_context.py` 或 `~/.claude/skills/zilan-agent/scripts/build_agama_context.py`
 
 ---
-*Agent 版本：v1.0 | 基于 zilan-agent v2.2 创建 | 2026-06-10*
+*Agent 版本：v1.1 | 基于 zilan-agent v2.4 更新 | 2026-06-12*
 *身份：独立修行者孜澜*
 *认知基底：优婆塞姚磊佛学体系*

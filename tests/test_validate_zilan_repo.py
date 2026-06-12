@@ -28,6 +28,7 @@ def test_platform_validation_doc_status_mismatch_is_reported(tmp_path: Path) -> 
 |---|---|
 | `tested` | Runtime validation exists. |
 | `definition-versioned` | Prompt is versioned. |
+| `harness-ready` | Harness exists but live runtime is not tested. |
 | `metadata-only` | Metadata exists. |
 | `config-only` | Configuration exists. |
 | `blocked` | Validation is blocked. |

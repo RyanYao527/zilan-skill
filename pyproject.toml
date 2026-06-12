@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "zilan-agent"
-version = "2.3.1"
-description = "Validation helpers for the Zilan Buddhist agent corpus."
+version = "2.4.0"
+description = "Validation helpers and API harness for the Zilan Buddhist agent corpus."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }

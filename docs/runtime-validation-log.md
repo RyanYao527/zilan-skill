@@ -96,6 +96,58 @@ Use conservative status labels:
 - ZC-04 surfaced residual false positives such as non-doctrinal `無我` contexts that require manual screening after keyword search.
 - One shell attempt to read a local installed skill path failed under the Windows sandbox. The rerun used the repository-local `SKILL.md`, agent prompt, and context files successfully.
 
+## 2026-06-12 Claude Code Rerun
+
+| Field | Value |
+|---|---|
+| Runtime | Claude Code CLI |
+| Provider / model | Claude Code 2.1.169; JSON model usage reported `deepseek-v4-pro[1m]` under the local Claude Code configuration |
+| Tool version | `claude -p` noninteractive mode with `agents/zilan-claude-code.md` appended as the agent prompt |
+| Repository commit | `1cae652fec50132e69c526113ba644dfeba21cbf` |
+| Branch | `codex/claude-openai-validation` |
+| Prompt set | ZC-01 through ZC-06 from `CODEX_REGRESSION_TESTS.md` and `tests/regression_cases.yaml` |
+| Transcript status | Summarized here; full JSON outputs are not committed. ZC-06 also wrote a report to `C:\tmp\zilan-claude-validation-20260612-ZC06.md`, outside the repository. |
+| Repository checks | `python -m ruff check scripts tests` pass; `python -m pytest` pass; `python scripts\validate_zilan_repo.py --check-generated --strict-yaml` pass |
+| Overall result | `pass` with the limitations below |
+
+### Case Results
+
+| Case | Mode | Result | Notes |
+|---|---|---|---|
+| ZC-01 | Skill lightweight dialogue | `pass` | Claude Code session `edbefc6f-5344-48f8-b4c8-8e47c9f25ab4`; used `Read` for `摄类学工具箱.md`, `心类学认知分析.md`, and `南传观禅指南.md`; no `Bash` or `Write`; boundary statement present. |
+| ZC-02 | Skill concept lookup | `pass` | Session `c5e3599d-d54d-4666-b27f-4f62fc8aa285`; used `Read` for `因明推理引擎.md` and `摄类学工具箱.md`; explained `遍是宗法性`, `同品定有性`, and `异品遍无性`; boundary statement present. |
+| ZC-03 | Skill cross-domain explanation | `pass` | Session `a51d0a1c-fb53-4600-872e-201821b02461`; used `Read` for `摄类学工具箱.md` and `心类学认知分析.md`; distinguished fact, concept label, `受`, `想`, and `瞋`; boundary statement present. |
+| ZC-04 | Explicit agent Agama search | `pass` | Initial session `2e25ea9e-761c-4371-b658-e10c29f47b6f` completed classification but looked for `~/.claude/skills/zilan-agent/scripts/search_agama.py`, which was not installed locally. Rerun session `6a7da561-6c7a-4ba0-8e8d-1e2f66c43629` used the explicit repository root and `scripts/search_agama.py --json`; local Markdown only; boundary statement present. |
+| ZC-05 | Explicit agent cross-domain research | `pass` | Session `13d6aac6-0594-4277-8431-ccaf4bfa057d`; used `Read` and `Bash`; connected Agama, Collected Topics, Buddhist logic, Madhyamaka, and vipassana; supplied local citations and practice / textual boundaries. |
+| ZC-06 | Long report output | `pass` | Session `7e4c7b98-e351-4abd-ae8e-03ac3b3455bb`; used `Read`, `Bash`, and `Write`; wrote `C:\tmp\zilan-claude-validation-20260612-ZC06.md`; independent file check found 352 lines; repository worktree remained clean. |
+
+### Known Limits
+
+- This validates Claude Code CLI noninteractive execution with the repository agent prompt loaded directly. It does not independently prove every user's installed `~/.claude/skills/zilan-agent` path is current.
+- Background auto-spawn behavior was not separately audited; explicit ZC-04 through ZC-06 prompts were executed through the loaded agent prompt in `claude -p`.
+- Full JSON transcripts are summarized, not committed verbatim.
+- The first ZC-04 run exposed an installation-path gap: `~/.claude/agents/zilan.md` existed locally, but `~/.claude/skills/zilan-agent/scripts/search_agama.py` did not. The repository prompt now prefers current-repo `scripts/` when available.
+
+## 2026-06-12 OpenAI API Harness Dry Run
+
+| Field | Value |
+|---|---|
+| Runtime | OpenAI API harness |
+| Provider / model | OpenAI Responses API request model `gpt-5.5` |
+| Tool version | `scripts/openai_api_harness.py` dry-run mode |
+| Repository branch | `codex/claude-openai-validation` |
+| Prompt set | Harness dry-run for ZC-02 / ZC-03 request construction from `tests/regression_cases.yaml` |
+| Transcript status | Dry-run request construction only; no live OpenAI response transcript is recorded. |
+| Repository checks | `python -m ruff check scripts tests` pass; `python -m pytest` pass; `python scripts\validate_zilan_repo.py --check-generated --strict-yaml` pass |
+| Overall result | `partial`: harness-ready, live provider execution not yet tested |
+
+### Observations
+
+- The harness loads `agents/openai.yaml`, regression case prompts, and bounded local context files.
+- Dry-run mode does not require `OPENAI_API_KEY` and is covered by `tests/test_openai_api_harness.py`.
+- Live mode is implemented behind `--live` and fails fast unless `OPENAI_API_KEY` is present.
+- OpenAI API should remain `harness-ready`, not `tested`, until a dated live run is recorded.
+
 ## Next Validation Entries
 
 Use this template for future manual sessions:

@@ -21,6 +21,7 @@ REQUIRED_FILES = (
     "docs/platform-validation.md",
     "docs/runtime-validation-log.md",
     "docs/maintenance-roadmap.md",
+    "docs/openai-api-harness.md",
     "LICENSE",
     "CONTRIBUTING.md",
     "CONTRIBUTING-en.md",
@@ -29,6 +30,7 @@ REQUIRED_FILES = (
     "agents/zilan-codex.md",
     "scripts/build_agama_context.py",
     "scripts/search_agama.py",
+    "scripts/openai_api_harness.py",
     "tests/regression_cases.yaml",
 )
 
@@ -67,6 +69,7 @@ MAINTENANCE_ROADMAP_DOC = "docs/maintenance-roadmap.md"
 ALLOWED_VALIDATION_STATUSES = (
     "tested",
     "definition-versioned",
+    "harness-ready",
     "metadata-only",
     "config-only",
     "blocked",
