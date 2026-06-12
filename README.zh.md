@@ -172,12 +172,9 @@ GitHub Actions 会在 push 和 pull request 时自动运行同类检查。
 
 ## 兼容性与校勘边界
 
-- **Codex**：2026-06-10 已完成 ZC-01 到 ZC-06 回归矩阵，包括 ZC-04、ZC-05 两个显式 sub-agent 用例。
-- **Claude Code**：Agent 定义已纳入仓库：`agents/zilan-claude-code.md`；实际运行仍取决于本地 Claude Code 配置。
-- **OpenAI API / DeepSeek / GLM / 千问**：`agents/openai.yaml` 已保留跨平台元数据；目前仅视为元数据或配置态，尚未逐平台端到端实测。
+- **平台状态**：`agents/openai.yaml` 是机器可读的跨平台元数据来源；`docs/platform-validation.md` 记录状态定义、验证证据与更新规则。
+- **运行边界**：Codex、Claude Code、OpenAI API、DeepSeek、GLM、千问等路线，只有在平台验证文档中满足定义后，才可称为已测试。
 - **学术校勘**：本地阿含 Markdown 是可检索工作语料；面向发表或严肃引用时，应回校 CBETA XML，并视需要比对平行译本与巴利对应文本。
-
-平台状态定义、验证证据与更新规则见：`docs/platform-validation.md`。
 
 ---
 

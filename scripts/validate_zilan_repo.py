@@ -58,6 +58,23 @@ GENERATED_AGAMA_FILES = (
 
 REGRESSION_CASES = ("ZC-01", "ZC-02", "ZC-03", "ZC-04", "ZC-05", "ZC-06")
 REGRESSION_CASES_PATH = "tests/regression_cases.yaml"
+README_FILES = ("README.md", "README.zh.md", "README.en.md")
+PLATFORM_VALIDATION_DOC = "docs/platform-validation.md"
+ALLOWED_VALIDATION_STATUSES = (
+    "tested",
+    "definition-versioned",
+    "metadata-only",
+    "config-only",
+    "blocked",
+)
+PLATFORM_VALIDATION_LABELS = {
+    "codex": "Codex",
+    "claude_code": "Claude Code",
+    "openai_api": "OpenAI API",
+    "deepseek": "DeepSeek",
+    "glm": "GLM",
+    "qwen": "Qwen",
+}
 
 
 def _hash_file(path: Path) -> str:
@@ -175,17 +192,117 @@ def _check_agent_prompts(root: Path, failures: list[str]) -> None:
             failures.append(f"agents/zilan-codex.md missing required fragment: {fragment}")
 
 
+def _get_validation_mapping(data: object, failures: list[str]) -> dict[str, object]:
+    if not isinstance(data, dict):
+        failures.append("agents/openai.yaml must be a mapping.")
+        return {}
+
+    validation = data.get("validation")
+    if not isinstance(validation, dict):
+        failures.append("agents/openai.yaml missing validation mapping.")
+        return {}
+    return validation
+
+
+def _check_agent_validation_entries(validation: dict[str, object], failures: list[str]) -> None:
+    expected_keys = set(PLATFORM_VALIDATION_LABELS)
+    actual_keys = set(validation)
+    for provider in sorted(expected_keys - actual_keys):
+        failures.append(f"agents/openai.yaml missing validation entry: {provider}")
+    for provider in sorted(actual_keys - expected_keys):
+        failures.append(f"agents/openai.yaml has undocumented validation entry: {provider}")
+
+    for provider in PLATFORM_VALIDATION_LABELS:
+        entry = validation.get(provider)
+        if not isinstance(entry, dict):
+            failures.append(f"agents/openai.yaml validation.{provider} must be a mapping.")
+            continue
+
+        status = entry.get("status")
+        if status not in ALLOWED_VALIDATION_STATUSES:
+            failures.append(
+                f"agents/openai.yaml validation.{provider}.status must be one of "
+                f"{', '.join(ALLOWED_VALIDATION_STATUSES)}."
+            )
+        if not isinstance(entry.get("scope"), str) or not entry["scope"]:
+            failures.append(f"agents/openai.yaml validation.{provider}.scope must be a non-empty string.")
+        if status == "tested" and (not isinstance(entry.get("date"), str) or not entry["date"]):
+            failures.append(f"agents/openai.yaml validation.{provider}.date is required when status is tested.")
+
+
+def _parse_markdown_table_rows(text: str) -> dict[str, list[str]]:
+    rows: dict[str, list[str]] = {}
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|") or set(stripped.replace("|", "").strip()) <= {"-", ":"}:
+            continue
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        if len(cells) >= 2:
+            rows[cells[0]] = cells
+    return rows
+
+
+def _check_platform_validation_doc(root: Path, validation: dict[str, object], failures: list[str]) -> None:
+    doc_text = (root / PLATFORM_VALIDATION_DOC).read_text(encoding="utf-8")
+    rows = _parse_markdown_table_rows(doc_text)
+
+    for status in ALLOWED_VALIDATION_STATUSES:
+        if f"| `{status}` |" not in doc_text:
+            failures.append(f"{PLATFORM_VALIDATION_DOC} missing status definition: {status}")
+
+    for provider, label in PLATFORM_VALIDATION_LABELS.items():
+        entry = validation.get(provider)
+        if not isinstance(entry, dict):
+            continue
+
+        status = entry.get("status")
+        if not isinstance(status, str):
+            continue
+
+        row = rows.get(label)
+        if row is None:
+            failures.append(f"{PLATFORM_VALIDATION_DOC} missing platform row: {label}")
+            continue
+        if len(row) < 3:
+            failures.append(f"{PLATFORM_VALIDATION_DOC} platform row is incomplete: {label}")
+            continue
+        if row[1] != f"`{status}`":
+            failures.append(
+                f"{PLATFORM_VALIDATION_DOC} status mismatch for {label}: "
+                f"expected `{status}` from agents/openai.yaml, got {row[1]}."
+            )
+
+        date = entry.get("date")
+        if status == "tested" and isinstance(date, str) and row[2] != date:
+            failures.append(
+                f"{PLATFORM_VALIDATION_DOC} validation date mismatch for {label}: "
+                f"expected {date} from agents/openai.yaml, got {row[2]}."
+            )
+
+
+def _check_readme_platform_validation_links(root: Path, failures: list[str]) -> None:
+    for rel_path in README_FILES:
+        text = (root / rel_path).read_text(encoding="utf-8")
+        if PLATFORM_VALIDATION_DOC not in text:
+            failures.append(f"{rel_path} should link to {PLATFORM_VALIDATION_DOC}.")
+        if "agents/openai.yaml" not in text:
+            failures.append(f"{rel_path} should mention agents/openai.yaml as platform metadata.")
+
+
 def _check_yaml(root: Path, failures: list[str], warnings: list[str], strict_yaml: bool) -> None:
     data = _load_yaml(root, "agents/openai.yaml", failures, warnings, strict_yaml)
     if data is None:
         return
 
-    validation = data.get("validation", {}) if isinstance(data, dict) else {}
-    if validation.get("codex", {}).get("status") != "tested":
+    validation = _get_validation_mapping(data, failures)
+    if not validation:
+        return
+
+    _check_agent_validation_entries(validation, failures)
+    _check_platform_validation_doc(root, validation, failures)
+    codex_validation = validation.get("codex")
+    if not isinstance(codex_validation, dict) or codex_validation.get("status") != "tested":
         failures.append("agents/openai.yaml should mark validation.codex.status as tested.")
-    for provider in ("openai_api", "deepseek", "glm", "qwen"):
-        if provider not in validation:
-            failures.append(f"agents/openai.yaml missing validation entry: {provider}")
 
 
 def _check_agama_search(root: Path, failures: list[str]) -> None:
@@ -270,6 +387,7 @@ def run_checks(
     _check_regression_matrix(root, failures)
     _check_regression_cases_yaml(root, failures, warnings, strict_yaml)
     _check_agent_prompts(root, failures)
+    _check_readme_platform_validation_links(root, failures)
     _check_yaml(root, failures, warnings, strict_yaml)
     _check_agama_search(root, failures)
     if check_generated:
