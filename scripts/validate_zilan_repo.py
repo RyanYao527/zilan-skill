@@ -19,6 +19,7 @@ REQUIRED_FILES = (
     "CODEX_REGRESSION_TESTS.md",
     "AGENT_UPGRADE_PORTABLE.md",
     "docs/platform-validation.md",
+    "docs/maintenance-roadmap.md",
     "LICENSE",
     "CONTRIBUTING.md",
     "CONTRIBUTING-en.md",
@@ -60,6 +61,7 @@ REGRESSION_CASES = ("ZC-01", "ZC-02", "ZC-03", "ZC-04", "ZC-05", "ZC-06")
 REGRESSION_CASES_PATH = "tests/regression_cases.yaml"
 README_FILES = ("README.md", "README.zh.md", "README.en.md")
 PLATFORM_VALIDATION_DOC = "docs/platform-validation.md"
+MAINTENANCE_ROADMAP_DOC = "docs/maintenance-roadmap.md"
 ALLOWED_VALIDATION_STATUSES = (
     "tested",
     "definition-versioned",
@@ -303,6 +305,8 @@ def _check_readme_platform_validation_links(root: Path, failures: list[str]) -> 
         text = (root / rel_path).read_text(encoding="utf-8")
         if PLATFORM_VALIDATION_DOC not in text:
             failures.append(f"{rel_path} should link to {PLATFORM_VALIDATION_DOC}.")
+        if MAINTENANCE_ROADMAP_DOC not in text:
+            failures.append(f"{rel_path} should link to {MAINTENANCE_ROADMAP_DOC}.")
         if "agents/openai.yaml" not in text:
             failures.append(f"{rel_path} should mention agents/openai.yaml as platform metadata.")
 
