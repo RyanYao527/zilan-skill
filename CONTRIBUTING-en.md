@@ -20,6 +20,18 @@ Thank you for your interest in contributing to Zilan Agent.
 - When modifying core definitions, please update corresponding sections in `沟通过程.md`
 - For significant changes, please open an Issue for discussion first
 
+## Local Validation
+
+After changing `SKILL.md`, `agents/`, `context/`, the Agama corpus, or scripts, run at least:
+
+```bash
+python scripts/validate_zilan_repo.py --check-generated
+python -m pytest
+python scripts/search_agama.py --terms "無我|非我|緣起" --limit 10
+```
+
+`validate_zilan_repo.py` checks required files, the Codex regression matrix, key Agent prompt fragments, Agama search smoke tests, and optionally verifies that Markdown generated from CBETA XML is stable.
+
 ## Knowledge Co-Building
 
 This skill is a living learning system. Core knowledge is maintained in:

@@ -148,6 +148,20 @@ See `CODEX_REGRESSION_TESTS.md` for the Codex regression matrix.
 
 ---
 
+## Engineering Checks
+
+This repository includes executable repository invariant checks, Agama search smoke tests, and pytest coverage. Run these after changing `SKILL.md`, `agents/`, `context/`, or build scripts:
+
+```bash
+python scripts/validate_zilan_repo.py --check-generated
+python -m pytest
+python scripts/search_agama.py --terms "無我|非我|緣起" --limit 10
+```
+
+GitHub Actions runs the same class of checks on push and pull request.
+
+---
+
 ## Compatibility And Collation Boundaries
 
 - **Codex**: ZC-01 through ZC-06 were tested on 2026-06-10, including the explicit sub-agent cases ZC-04 and ZC-05.

@@ -1,8 +1,7 @@
-from pathlib import Path
 import re
 import unicodedata
 import xml.etree.ElementTree as ET
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 AGAMA_DIR = ROOT / "context" / "agama"

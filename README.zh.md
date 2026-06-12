@@ -152,6 +152,20 @@ Codex 回归测试矩阵见：`CODEX_REGRESSION_TESTS.md`。
 
 ---
 
+## 工程验证
+
+本仓库包含可执行的结构校验、阿含检索 smoke test 和 pytest 测试。推荐在修改 `SKILL.md`、`agents/`、`context/` 或构建脚本后运行：
+
+```bash
+python scripts/validate_zilan_repo.py --check-generated
+python -m pytest
+python scripts/search_agama.py --terms "無我|非我|緣起" --limit 10
+```
+
+GitHub Actions 会在 push 和 pull request 时自动运行同类检查。
+
+---
+
 ## 兼容性与校勘边界
 
 - **Codex**：2026-06-10 已完成 ZC-01 到 ZC-06 回归矩阵，包括 ZC-04、ZC-05 两个显式 sub-agent 用例。
